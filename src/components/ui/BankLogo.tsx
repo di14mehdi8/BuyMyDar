@@ -19,7 +19,7 @@ const LOGOS: Record<
   bmce:         { bg: "#0055A4", text: "#fff", label: "BOA",   shape: "circle"  },
   cih:          { bg: "#00A651", text: "#fff", label: "CIH",   shape: "circle"  },
   bmci:         { bg: "#00965E", text: "#fff", label: "BMCI",  shape: "hex"     },
-  sgm:          { bg: "#E2001A", text: "#fff", label: "SGM",   shape: "shield"  },
+  saham:        { bg: "#C8102E", text: "#fff", label: "SHM",   shape: "shield"  },
   cdm:          { bg: "#004899", text: "#fff", label: "CDM",   shape: "circle"  },
   cfg:          { bg: "#6B21A8", text: "#fff", label: "CFG",   shape: "hex"     },
 };

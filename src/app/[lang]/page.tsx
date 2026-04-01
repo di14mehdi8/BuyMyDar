@@ -5,10 +5,11 @@ import { HeroSection }      from "@/components/sections/HeroSection";
 import { MortgageSimulator } from "@/components/simulator/MortgageSimulator";
 import { BankDirectory }    from "@/components/sections/BankDirectory";
 import { InsightsGrid }     from "@/components/sections/InsightsGrid";
-import { MRESection }       from "@/components/sections/MRESection";
-import { FAQSection }       from "@/components/sections/FAQSection";
-import { JsonLd }           from "@/components/seo/JsonLd";
-import { AdSlot }           from "@/components/ads/AdSlot";
+import { MRESection }         from "@/components/sections/MRESection";
+import { FAQSection }         from "@/components/sections/FAQSection";
+import { DaamSakaneBanner }   from "@/components/sections/DaamSakaneBanner";
+import { JsonLd }             from "@/components/seo/JsonLd";
+import { AdSlot }             from "@/components/ads/AdSlot";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -46,6 +47,9 @@ export default async function HomePage({ params }: Props) {
         <div className="flex justify-center">
           <AdSlot slotId="0987654321" format="rectangle" label={dict.ads.label} />
         </div>
+
+        {/* Daam Sakane state program banner */}
+        <DaamSakaneBanner />
 
         {/* Bank Directory */}
         <BankDirectory lang={lang} dict={dict.banks} />

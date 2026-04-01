@@ -1,4 +1,4 @@
-import { BANK_RATES, MARKET_AVERAGE_RATE } from "@/lib/mortgage/calculator";
+import { BANK_RATES, MARKET_AVERAGE_RATE, BAM_DATA_SOURCES } from "@/lib/mortgage/calculator";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/getDictionary";
 
