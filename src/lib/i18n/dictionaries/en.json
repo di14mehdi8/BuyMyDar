@@ -1,0 +1,141 @@
+{
+  "nav": {
+    "simulator": "Simulator",
+    "banks": "Banks",
+    "insights": "Insights",
+    "mre": "MRE Guide",
+    "login": "Sign In",
+    "cta": "Estimate my loan"
+  },
+  "hero": {
+    "badge": "🇲🇦 Morocco's #1 Mortgage Comparison Platform",
+    "headline": "Find the best",
+    "headline_accent": "mortgage rate in Morocco",
+    "subheadline": "Compare rates from all Moroccan banks in real-time. Built specifically for MREs living abroad.",
+    "cta_primary": "Simulate my loan",
+    "cta_secondary": "See today's rates",
+    "trust_labels": {
+      "banks": "8 banks compared",
+      "mre": "Available for MREs",
+      "secure": "100% free & secure"
+    }
+  },
+  "ticker": {
+    "label": "Today's average rate",
+    "cta": "See offers"
+  },
+  "simulator": {
+    "title": "Mortgage Simulator",
+    "subtitle": "Calculate your monthly payment in 30 seconds",
+    "amount_label": "Loan amount",
+    "duration_label": "Loan duration",
+    "rate_label": "Annual rate",
+    "insurance_label": "MRH Insurance",
+    "result_monthly": "Estimated monthly payment",
+    "result_total": "Total loan cost",
+    "result_insurance": "of which insurance",
+    "result_interest": "of which interest",
+    "currency_toggle": "Currency",
+    "years_suffix": "years",
+    "months_suffix": "months",
+    "apply_cta": "Apply for this rate",
+    "disclaimer": "Indicative simulation. Contact a bank for an official offer.",
+    "amortization": "Amortization schedule",
+    "tabs": {
+      "simulator": "Simulator",
+      "amortization": "Amortization",
+      "comparison": "Bank comparison"
+    }
+  },
+  "banks": {
+    "title": "Compare Moroccan Banks",
+    "subtitle": "Rates updated weekly. Click to apply directly.",
+    "columns": {
+      "bank": "Bank",
+      "rate_fixed": "Fixed Rate",
+      "rate_variable": "Variable Rate",
+      "max_duration": "Max Duration",
+      "max_amount": "Max Amount",
+      "mre": "MRE",
+      "action": "Apply"
+    },
+    "mre_yes": "Yes",
+    "mre_no": "No",
+    "apply_btn": "Apply",
+    "updated": "Updated on"
+  },
+  "insights": {
+    "title": "Insights & News",
+    "subtitle": "Everything you need to know about your Moroccan property project",
+    "read_more": "Read article",
+    "min_read": "min read",
+    "verified_by": "Verified by",
+    "categories": {
+      "guide": "Guide",
+      "news": "News",
+      "mre": "MRE",
+      "rates": "Rates"
+    }
+  },
+  "mre_section": {
+    "title": "Are you an MRE?",
+    "subtitle": "We have specific solutions for Moroccans Residing Abroad",
+    "features": {
+      "dirham": {
+        "title": "Convertible Dirham Account",
+        "desc": "Open your account from France, Spain, or Canada in a few clicks."
+      },
+      "transfer": {
+        "title": "Optimized Transfers",
+        "desc": "Compare transfer fees: Western Union, Wise, and SWIFT wire transfers."
+      },
+      "preapproval": {
+        "title": "Pre-Approval Letter",
+        "desc": "Get a borrowing capacity certificate to show real estate agencies."
+      },
+      "tracking": {
+        "title": "Life-of-Loan Tracking",
+        "desc": "We alert you when your rate can be renegotiated (mortgage refinancing)."
+      }
+    }
+  },
+  "ads": {
+    "label": "Advertisement"
+  },
+  "footer": {
+    "tagline": "Morocco's reference platform for mortgage comparison.",
+    "links": {
+      "about": "About",
+      "contact": "Contact",
+      "legal": "Legal Notice",
+      "privacy": "Privacy Policy",
+      "sitemap": "Sitemap"
+    },
+    "copyright": "© 2026 BuyMyDar. All rights reserved."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "q": "What is the best mortgage rate in Morocco in 2026?",
+        "a": "Mortgage rates in Morocco in 2026 range from 4.50% to 5.50% for fixed-rate loans, depending on the bank and borrower profile. Attijariwafa Bank and BCP generally offer the most competitive rates for both residents and MREs."
+      },
+      {
+        "q": "Can an MRE get a mortgage in Morocco?",
+        "a": "Yes, all Moroccan banks have products dedicated to Moroccans Residing Abroad (MRE). You typically need a convertible dirham account, 3 months of bank statements, and proof of stable income in your country of residence."
+      },
+      {
+        "q": "How do I calculate my mortgage monthly payment?",
+        "a": "The formula is M = P × [r(1+r)^n] / [(1+r)^n - 1], where P = principal borrowed, r = monthly rate (annual rate ÷ 12), and n = number of monthly payments. Our simulator performs this calculation automatically with MRH insurance included."
+      },
+      {
+        "q": "What is the maximum duration for a mortgage in Morocco?",
+        "a": "The maximum duration is generally 25 years (300 months) for residents and 20 years for MREs. Some banks may go up to 30 years depending on the profile."
+      },
+      {
+        "q": "What is a Convertible Dirham Account?",
+        "a": "A Convertible Dirham Account is a Moroccan bank account allowing MREs to freely transfer funds between Morocco and abroad. It is essential for financing real estate in Morocco from abroad."
+      }
+    ]
+  }
+}

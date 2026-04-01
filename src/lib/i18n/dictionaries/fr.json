@@ -1,0 +1,141 @@
+{
+  "nav": {
+    "simulator": "Simulateur",
+    "banks": "Banques",
+    "insights": "Conseils",
+    "mre": "Guide MRE",
+    "login": "Connexion",
+    "cta": "Estimer mon prêt"
+  },
+  "hero": {
+    "badge": "🇲🇦 N°1 en comparaison immobilière au Maroc",
+    "headline": "Trouvez le meilleur taux",
+    "headline_accent": "immobilier au Maroc",
+    "subheadline": "Comparez les taux de toutes les banques marocaines en temps réel. Spécialement conçu pour les MRE.",
+    "cta_primary": "Simuler mon crédit",
+    "cta_secondary": "Voir les taux du jour",
+    "trust_labels": {
+      "banks": "8 banques comparées",
+      "mre": "Disponible pour les MRE",
+      "secure": "100% gratuit & sécurisé"
+    }
+  },
+  "ticker": {
+    "label": "Taux moyen aujourd'hui",
+    "cta": "Voir les offres"
+  },
+  "simulator": {
+    "title": "Simulateur de Crédit Immobilier",
+    "subtitle": "Calculez votre mensualité en 30 secondes",
+    "amount_label": "Montant emprunté",
+    "duration_label": "Durée du prêt",
+    "rate_label": "Taux annuel",
+    "insurance_label": "Assurance MRH",
+    "result_monthly": "Mensualité estimée",
+    "result_total": "Coût total du crédit",
+    "result_insurance": "dont assurance",
+    "result_interest": "dont intérêts",
+    "currency_toggle": "Devise",
+    "years_suffix": "ans",
+    "months_suffix": "mois",
+    "apply_cta": "Demander ce taux",
+    "disclaimer": "Simulation indicative. Contactez une banque pour une offre officielle.",
+    "amortization": "Tableau d'amortissement",
+    "tabs": {
+      "simulator": "Simulateur",
+      "amortization": "Amortissement",
+      "comparison": "Comparaison banques"
+    }
+  },
+  "banks": {
+    "title": "Comparez les banques marocaines",
+    "subtitle": "Taux mis à jour chaque semaine. Cliquez pour faire une demande directe.",
+    "columns": {
+      "bank": "Banque",
+      "rate_fixed": "Taux fixe",
+      "rate_variable": "Taux variable",
+      "max_duration": "Durée max",
+      "max_amount": "Montant max",
+      "mre": "MRE",
+      "action": "Demander"
+    },
+    "mre_yes": "Oui",
+    "mre_no": "Non",
+    "apply_btn": "Faire une demande",
+    "updated": "Mis à jour le"
+  },
+  "insights": {
+    "title": "Conseils & Actualités",
+    "subtitle": "Tout ce qu'il faut savoir pour votre projet immobilier au Maroc",
+    "read_more": "Lire l'article",
+    "min_read": "min de lecture",
+    "verified_by": "Vérifié par",
+    "categories": {
+      "guide": "Guide",
+      "news": "Actualité",
+      "mre": "MRE",
+      "rates": "Taux"
+    }
+  },
+  "mre_section": {
+    "title": "Vous êtes MRE ?",
+    "subtitle": "Nous avons des solutions spécifiques pour les Marocains Résidant à l'Étranger",
+    "features": {
+      "dirham": {
+        "title": "Compte Dirham Convertible",
+        "desc": "Ouvrez votre compte depuis la France, l'Espagne ou le Canada en quelques clics."
+      },
+      "transfer": {
+        "title": "Transferts Optimisés",
+        "desc": "Comparez les frais de transfert Western Union, Wise, et virements SWIFT."
+      },
+      "preapproval": {
+        "title": "Lettre de Pré-Approbation",
+        "desc": "Obtenez une attestation de capacité d'emprunt à montrer aux agences immobilières."
+      },
+      "tracking": {
+        "title": "Suivi Life-of-Loan",
+        "desc": "On vous alerte quand votre taux peut être renégocié (rachat de crédit)."
+      }
+    }
+  },
+  "ads": {
+    "label": "Publicité"
+  },
+  "footer": {
+    "tagline": "La plateforme de référence pour le crédit immobilier au Maroc.",
+    "links": {
+      "about": "À propos",
+      "contact": "Contact",
+      "legal": "Mentions légales",
+      "privacy": "Confidentialité",
+      "sitemap": "Plan du site"
+    },
+    "copyright": "© 2026 BuyMyDar. Tous droits réservés."
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "items": [
+      {
+        "q": "Quel est le meilleur taux immobilier au Maroc en 2026 ?",
+        "a": "Les taux immobiliers au Maroc en 2026 varient entre 4,50% et 5,50% pour les prêts à taux fixe, selon la banque et le profil de l'emprunteur. Attijariwafa Bank et BCP proposent généralement les taux les plus compétitifs pour les résidents comme pour les MRE."
+      },
+      {
+        "q": "Un MRE peut-il obtenir un crédit immobilier au Maroc ?",
+        "a": "Oui, toutes les banques marocaines disposent de produits dédiés aux Marocains Résidant à l'Étranger (MRE). Il faut généralement un compte en dirham convertible, 3 mois de relevés bancaires, et justifier de revenus stables dans le pays de résidence."
+      },
+      {
+        "q": "Comment calculer sa mensualité de crédit immobilier ?",
+        "a": "La formule est M = P × [r(1+r)^n] / [(1+r)^n - 1], où P = capital emprunté, r = taux mensuel (taux annuel ÷ 12), et n = nombre de mensualités. Notre simulateur effectue ce calcul automatiquement avec l'assurance MRH incluse."
+      },
+      {
+        "q": "Quelle est la durée maximale d'un crédit immobilier au Maroc ?",
+        "a": "La durée maximale est généralement de 25 ans (300 mois) pour les résidents et de 20 ans pour les MRE. Certaines banques peuvent aller jusqu'à 30 ans selon le profil."
+      },
+      {
+        "q": "Qu'est-ce qu'un compte Dirham Convertible ?",
+        "a": "Un compte Dirham Convertible (ou compte en devises) est un compte bancaire marocain permettant aux MRE de transférer librement leurs fonds entre le Maroc et l'étranger. Il est indispensable pour financer un bien immobilier au Maroc depuis l'étranger."
+      }
+    ]
+  }
+}
