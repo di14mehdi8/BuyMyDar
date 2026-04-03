@@ -32,7 +32,7 @@ const DEFAULTS = {
   principal:    1_500_000,
   annualRate:   MARKET_AVERAGE_RATE,
   termYears:    20,
-  insuranceRate: 0.003,
+  insuranceRate: 0.0043,
 };
 
 /* ── Slider ─────────────────────────────────────────────────────────── */
@@ -122,6 +122,11 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
     { id: "amortization", label: dict.tabs.amortization },
     { id: "comparison",   label: dict.tabs.comparison },
   ];
+
+  const bestBank = useMemo(
+    () => [...BANK_RATES].sort((a, b) => a.fixedRate - b.fixedRate)[0],
+    []
+  );
 
   const savingsVsAverage = result.totalMonthly - calculateMortgage({
     principal, annualRate: MARKET_AVERAGE_RATE,
@@ -296,21 +301,16 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   </p>
                   <p className="text-blue-300 text-xs">/ {dict.months_suffix}</p>
 
-                  {/* DTI hint */}
+                  {/* Minimum income required for 33% DTI */}
                   <div className="mt-4 pt-3 border-t border-white/15">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-blue-200">Taux d&apos;effort estimé</span>
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="text-blue-200">Revenu min. requis</span>
                       <span className="text-white font-bold">
-                        ~{Math.round((result.totalMonthly / (principal * 0.0008)) * 100)}%
-                        <span className="text-blue-300 font-normal ms-1">(max 40%)</span>
+                        {fmt(result.totalMonthly / 0.33)}
+                        <span className="text-blue-300 font-normal ms-1">/mois</span>
                       </span>
                     </div>
-                    <div className="mt-1.5 h-1.5 bg-white/20 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-white/70 rounded-full transition-all"
-                        style={{ width: `${Math.min(100, Math.round((result.totalMonthly / (principal * 0.0008)) * 100))}%` }}
-                      />
-                    </div>
+                    <p className="text-[10px] text-blue-300/70">Pour un taux d&apos;effort de 33% (norme BAM)</p>
                   </div>
                 </motion.div>
 
@@ -341,21 +341,21 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                     <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Meilleure offre</p>
                     <span className="badge-green">
                       <TrendingDown className="w-3 h-3" />
-                      {(BANK_RATES[0].fixedRate * 100).toFixed(2)}%
+                      {(bestBank.fixedRate * 100).toFixed(2)}%
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <div className="w-9 h-9 rounded-xl overflow-hidden shadow-sm border border-slate-100">
-                        <BankLogo bankId="attijariwafa" size={36} />
+                        <BankLogo bankId={bestBank.id} size={36} />
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-900 text-sm">Attijariwafa</p>
+                        <p className="font-semibold text-slate-900 text-sm">{bestBank.name}</p>
                         <p className="text-xs text-slate-400">Taux le plus bas</p>
                       </div>
                     </div>
                     <a
-                      href={BANK_RATES[0].applyUrl}
+                      href={bestBank.applyUrl}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
                       className="btn-primary text-xs py-2 px-3"
@@ -450,9 +450,9 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                 Simulation pour <strong className="text-slate-700">{fmt(principal)}</strong> sur <strong className="text-slate-700">{termYears} ans</strong>
               </p>
               <div className="space-y-2">
-                {BANK_RATES.map((bank, i) => {
+                {BANK_RATES.map((bank) => {
                   const sim = calculateMortgage({ principal, annualRate: bank.fixedRate, termMonths: termYears * 12, insuranceRate });
-                  const isBest = i === 0;
+                  const isBest = bank.id === bestBank.id;
                   const barW = 100 - ((bank.fixedRate - Math.min(...BANK_RATES.map(b => b.fixedRate))) / (Math.max(...BANK_RATES.map(b => b.fixedRate)) - Math.min(...BANK_RATES.map(b => b.fixedRate)))) * 80;
                   return (
                     <div
