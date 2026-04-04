@@ -1,15 +1,18 @@
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/getDictionary";
-import { HeroSection }      from "@/components/sections/HeroSection";
-import { MortgageSimulator } from "@/components/simulator/MortgageSimulator";
-import { BankDirectory }    from "@/components/sections/BankDirectory";
-import { InsightsGrid }     from "@/components/sections/InsightsGrid";
-import { MRESection }         from "@/components/sections/MRESection";
-import { FAQSection }         from "@/components/sections/FAQSection";
-import { DaamSakaneBanner }   from "@/components/sections/DaamSakaneBanner";
-import { JsonLd }             from "@/components/seo/JsonLd";
-import { AdSlot }             from "@/components/ads/AdSlot";
+import { HeroSection }             from "@/components/sections/HeroSection";
+import { MortgageSimulator }       from "@/components/simulator/MortgageSimulator";
+import { BankDirectory }           from "@/components/sections/BankDirectory";
+import { InsightsGrid }            from "@/components/sections/InsightsGrid";
+import { MRESection }              from "@/components/sections/MRESection";
+import { FAQSection }              from "@/components/sections/FAQSection";
+import { DaamSakaneBanner }        from "@/components/sections/DaamSakaneBanner";
+import { NotaryFeesCalculator }    from "@/components/sections/NotaryFeesCalculator";
+import { DocumentsSection }        from "@/components/sections/DocumentsSection";
+import { RateAlert }               from "@/components/sections/RateAlert";
+import { JsonLd }                  from "@/components/seo/JsonLd";
+import { AdSlot }                  from "@/components/ads/AdSlot";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -40,13 +43,16 @@ export default async function HomePage({ params }: Props) {
       {/* ── MAIN CONTENT ──────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 pb-24">
 
-        {/* Simulator */}
+        {/* Mortgage Simulator (now with 5 tabs) */}
         <MortgageSimulator lang={lang} dict={dict.simulator} />
 
         {/* Rectangle ad — between simulator and bank directory */}
         <div className="flex justify-center">
           <AdSlot slotId="0987654321" format="rectangle" label={dict.ads.label} />
         </div>
+
+        {/* Notary Fees Calculator */}
+        <NotaryFeesCalculator />
 
         {/* Daam Sakane state program banner */}
         <DaamSakaneBanner />
@@ -57,8 +63,14 @@ export default async function HomePage({ params }: Props) {
         {/* MRE Section */}
         <MRESection lang={lang} dict={dict.mre_section} />
 
-        {/* Banner ad — between MRE and insights */}
+        {/* Rate Alert */}
+        <RateAlert />
+
+        {/* Banner ad — between rate alert and documents */}
         <AdSlot slotId="1122334455" format="banner" label={dict.ads.label} />
+
+        {/* Documents required — compromis + mortgage */}
+        <DocumentsSection />
 
         {/* Insights / Blog Grid */}
         <InsightsGrid lang={lang} dict={dict.insights} />

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, BarChart2, BookOpen, Users, ChevronDown } from "lucide-react";
+import { Menu, X, Home, BarChart2, BookOpen, Users, ChevronDown, Map, FileText } from "lucide-react";
 import { locales, localeNames, localeFlags, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -33,8 +33,10 @@ export function Navbar({ lang, dict }: NavbarProps) {
   const links = [
     { href: `/${lang}#simulator`, label: dict.simulator, icon: BarChart2 },
     { href: `/${lang}#banks`,     label: dict.banks,     icon: Home },
+    { href: `/${lang}/guide`,     label: "Guide",         icon: Map },
+    { href: `/${lang}/mre`,       label: dict.mre,       icon: Users },
     { href: `/${lang}#insights`,  label: dict.insights,  icon: BookOpen },
-    { href: `/${lang}#mre`,       label: dict.mre,       icon: Users },
+    { href: `/${lang}/mourabaha`, label: "Mourabaha",    icon: FileText },
   ];
 
   return (

@@ -4,7 +4,8 @@ import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calculator, TrendingDown, Info, ExternalLink,
-  ArrowRight, RefreshCw, ChevronRight,
+  ArrowRight, RefreshCw, ChevronRight, Download,
+  Users, RotateCcw,
 } from "lucide-react";
 import {
   calculateMortgage, formatCurrency, convertCurrency,
@@ -20,7 +21,7 @@ import type { Dictionary } from "@/lib/i18n/getDictionary";
 
 interface SimulatorProps { lang: string; dict: Dictionary["simulator"]; }
 type Currency = "MAD" | "EUR" | "USD";
-type Tab = "simulator" | "amortization" | "comparison";
+type Tab = "simulator" | "amortization" | "comparison" | "capacite" | "rachat";
 
 const CURRENCIES: { value: Currency; flag: string; symbol: string }[] = [
   { value: "MAD", flag: "🇲🇦", symbol: "DH" },
@@ -121,7 +122,76 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
     { id: "simulator",    label: dict.tabs.simulator },
     { id: "amortization", label: dict.tabs.amortization },
     { id: "comparison",   label: dict.tabs.comparison },
+    { id: "capacite",     label: "Capacité d'emprunt" },
+    { id: "rachat",       label: "Rachat de crédit" },
   ];
+
+  /* ── Borrowing-capacity state ───────────────────────────────────────── */
+  const [bcSalary,    setBcSalary]    = useState(15_000);
+  const [bcOther,     setBcOther]     = useState(0);
+  const [bcDebts,     setBcDebts]     = useState(0);
+  const [bcTerm,      setBcTerm]      = useState(20);
+  const [bcRate,      setBcRate]      = useState(MARKET_AVERAGE_RATE);
+
+  const bcMaxMonthly = useMemo(() => {
+    const totalIncome = bcSalary + bcOther;
+    return Math.max(0, totalIncome * 0.33 - bcDebts);
+  }, [bcSalary, bcOther, bcDebts]);
+
+  const bcMaxCapital = useMemo(() => {
+    if (bcMaxMonthly <= 0) return 0;
+    const r = bcRate / 12;
+    const n = bcTerm * 12;
+    const insMonthly = (1 * bcRate * 0.0043) / 12; // insurance per MAD
+    // net monthly available for amortization (subtract insurance on capital)
+    // iterate: capital = (maxMonthly - capital*ins/12) * [(1+r)^n-1]/[r*(1+r)^n]
+    // Simplified: capital ≈ maxMonthly / (r*(1+r)^n/[(1+r)^n-1] + ins/12)
+    const factor = Math.pow(1 + r, n);
+    const annuityCoeff = (r * factor) / (factor - 1);
+    const insCoeff = 0.0043 / 12;
+    return Math.round(bcMaxMonthly / (annuityCoeff + insCoeff));
+  }, [bcMaxMonthly, bcRate, bcTerm]);
+
+  /* ── Refinancing state ──────────────────────────────────────────────── */
+  const [reCapital,     setReCapital]     = useState(800_000);
+  const [reCurrentRate, setReCurrentRate] = useState(0.055);
+  const [reNewRate,     setReNewRate]     = useState(MARKET_AVERAGE_RATE);
+  const [reRemaining,   setReRemaining]   = useState(15);
+
+  const refi = useMemo(() => {
+    const n = reRemaining * 12;
+    const currentSim = calculateMortgage({ principal: reCapital, annualRate: reCurrentRate, termMonths: n });
+    const newSim     = calculateMortgage({ principal: reCapital, annualRate: reNewRate,     termMonths: n });
+    const monthlySavings = currentSim.totalMonthly - newSim.totalMonthly;
+    // IRA = min(3% of capital, 6 months interest) — BAM regulation
+    const sixMonthInterest = (reCapital * reCurrentRate * 6) / 12;
+    const ira = Math.min(reCapital * 0.03, sixMonthInterest);
+    const breakEvenMonths = monthlySavings > 0 ? Math.ceil(ira / monthlySavings) : Infinity;
+    const totalSavings = monthlySavings > 0
+      ? Math.max(0, monthlySavings * n - ira)
+      : 0;
+    return { currentMonthly: currentSim.totalMonthly, newMonthly: newSim.totalMonthly, monthlySavings, ira, breakEvenMonths, totalSavings };
+  }, [reCapital, reCurrentRate, reNewRate, reRemaining]);
+
+  /* ── CSV export ─────────────────────────────────────────────────────── */
+  const downloadCSV = () => {
+    const header = "Mois,Mensualité,Capital,Intérêts,Assurance,Capital restant";
+    const rows = result.schedule.map((r) =>
+      [r.month,
+       (r.payment + result.monthlyInsurance).toFixed(2),
+       r.principal.toFixed(2),
+       r.interest.toFixed(2),
+       result.monthlyInsurance.toFixed(2),
+       r.balance.toFixed(2)
+      ].join(",")
+    );
+    const csv = [header, ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = "amortissement-buymydar.csv"; a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const bestBank = useMemo(
     () => [...BANK_RATES].sort((a, b) => a.fixedRate - b.fixedRate)[0],
@@ -383,6 +453,15 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
               transition={{ duration: 0.2 }}
               className="p-6 space-y-6"
             >
+              <div className="flex justify-end">
+                <button
+                  onClick={downloadCSV}
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold
+                             bg-slate-100 text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" /> Exporter CSV
+                </button>
+              </div>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -10 }}>
@@ -497,6 +576,165 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                     </div>
                   );
                 })}
+              </div>
+            </motion.div>
+          )}
+          {/* BORROWING CAPACITY TAB */}
+          {activeTab === "capacite" && (
+            <motion.div
+              key="capacite"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="p-6 grid grid-cols-1 lg:grid-cols-5 gap-8"
+            >
+              {/* Inputs */}
+              <div className="lg:col-span-3 space-y-6">
+                <Slider label="Revenu mensuel net" value={bcSalary} min={3_000} max={100_000} step={500}
+                  onChange={setBcSalary} display={fmt(bcSalary)} hint="/mois" />
+                <Slider label="Autres revenus (loyers, dividendes…)" value={bcOther} min={0} max={50_000} step={500}
+                  onChange={setBcOther} display={fmt(bcOther)} hint="/mois" />
+                <Slider label="Charges de crédit existantes" value={bcDebts} min={0} max={20_000} step={500}
+                  onChange={setBcDebts} display={fmt(bcDebts)} hint="/mois" />
+                <Slider label="Durée souhaitée" value={bcTerm} min={5} max={30} step={1}
+                  onChange={setBcTerm} display={`${bcTerm}`} hint="ans" />
+                <Slider label="Taux annuel" value={bcRate} min={0.03} max={0.08} step={0.0005}
+                  onChange={setBcRate} display={`${(bcRate * 100).toFixed(2)}%`} hint="fixe" />
+              </div>
+
+              {/* Results */}
+              <div className="lg:col-span-2 space-y-3">
+                <motion.div
+                  key={bcMaxCapital}
+                  initial={{ scale: 0.98, opacity: 0.8 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.15 }}
+                  className="rounded-2xl p-5 text-white"
+                  style={{ background: "linear-gradient(135deg,#059669 0%,#065f46 100%)" }}
+                >
+                  <p className="text-emerald-200 text-xs font-bold uppercase tracking-wider mb-2">
+                    Capacité d'emprunt maximale
+                  </p>
+                  <p className="text-4xl font-bold tracking-tight mb-0.5">
+                    {fmt(bcMaxCapital)}
+                  </p>
+                  <p className="text-emerald-300 text-xs">capital empruntable (assurance incluse)</p>
+                  <div className="mt-4 pt-3 border-t border-white/15">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-emerald-200">Mensualité max (33% DTI)</span>
+                      <span className="text-white font-bold">{fmt(bcMaxMonthly)}/mois</span>
+                    </div>
+                    <div className="mt-1.5 h-1.5 bg-white/20 rounded-full overflow-hidden">
+                      <div className="h-full bg-white/70 rounded-full" style={{ width: "33%" }} />
+                    </div>
+                    <p className="text-[10px] text-emerald-300/70 mt-1.5">Taux d'effort ≤ 33% (norme BAM)</p>
+                  </div>
+                </motion.div>
+
+                <div className="card p-4 space-y-0">
+                  <ResultRow label="Revenu total pris en compte" value={fmt(bcSalary + bcOther)} />
+                  <ResultRow label="Charges déduites" value={fmt(bcDebts)} />
+                  <ResultRow label="Mensualité disponible" value={fmt(bcMaxMonthly)} />
+                  <ResultRow
+                    label="Capital (taux sélectionné)"
+                    value={fmt(bcMaxCapital)}
+                    sub={`sur ${bcTerm} ans à ${(bcRate * 100).toFixed(2)}%`}
+                  />
+                </div>
+
+                {bcMaxCapital > 0 && (
+                  <div className="rounded-xl bg-brand-50 border border-brand-100 px-4 py-3 text-xs text-brand-700">
+                    Avec la meilleure banque actuelle (CIH 4.45%) sur {bcTerm} ans :{" "}
+                    <strong>{fmt(Math.round(bcMaxMonthly / ((0.0445/12 * Math.pow(1+0.0445/12, bcTerm*12)) / (Math.pow(1+0.0445/12, bcTerm*12)-1) + 0.0043/12)))}</strong>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* REFINANCING TAB */}
+          {activeTab === "rachat" && (
+            <motion.div
+              key="rachat"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="p-6 grid grid-cols-1 lg:grid-cols-5 gap-8"
+            >
+              {/* Inputs */}
+              <div className="lg:col-span-3 space-y-6">
+                <Slider label="Capital restant dû" value={reCapital} min={100_000} max={5_000_000} step={50_000}
+                  onChange={setReCapital} display={fmt(reCapital)} />
+                <Slider label="Taux actuel" value={reCurrentRate} min={0.04} max={0.10} step={0.0005}
+                  onChange={setReCurrentRate} display={`${(reCurrentRate * 100).toFixed(2)}%`} hint="annuel" />
+                <Slider label="Nouveau taux proposé" value={reNewRate} min={0.03} max={0.09} step={0.0005}
+                  onChange={setReNewRate} display={`${(reNewRate * 100).toFixed(2)}%`} hint="annuel" />
+                <Slider label="Durée restante" value={reRemaining} min={2} max={30} step={1}
+                  onChange={setReRemaining} display={`${reRemaining}`} hint="ans" />
+
+                <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4 text-xs text-slate-500 space-y-1">
+                  <p><strong className="text-slate-700">IRA (Indemnité de remboursement anticipé)</strong></p>
+                  <p>
+                    Plafonnée par BAM au minimum de : 3% du capital restant dû ou 6 mois d'intérêts.
+                    Votre IRA estimée : <strong className="text-slate-700">{fmt(refi.ira)}</strong>
+                  </p>
+                </div>
+              </div>
+
+              {/* Results */}
+              <div className="lg:col-span-2 space-y-3">
+                <motion.div
+                  key={refi.totalSavings}
+                  initial={{ scale: 0.98, opacity: 0.8 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.15 }}
+                  className={cn(
+                    "rounded-2xl p-5 text-white",
+                  )}
+                  style={{ background: refi.monthlySavings > 0
+                    ? "linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%)"
+                    : "linear-gradient(135deg,#6b7280 0%,#374151 100%)"
+                  }}
+                >
+                  <p className="text-purple-200 text-xs font-bold uppercase tracking-wider mb-2">
+                    {refi.monthlySavings > 0 ? "Économie totale estimée" : "Rachat non rentable"}
+                  </p>
+                  <p className="text-4xl font-bold tracking-tight mb-0.5">
+                    {refi.monthlySavings > 0 ? fmt(refi.totalSavings) : "—"}
+                  </p>
+                  <p className="text-purple-300 text-xs">
+                    {refi.monthlySavings > 0
+                      ? `après remboursement de l'IRA (${fmt(refi.ira)})`
+                      : "Le nouveau taux est supérieur ou égal à l'actuel"}
+                  </p>
+                  {refi.monthlySavings > 0 && (
+                    <div className="mt-4 pt-3 border-t border-white/15">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-purple-200">Point mort</span>
+                        <span className="text-white font-bold">
+                          {refi.breakEvenMonths === Infinity ? "—" : `${refi.breakEvenMonths} mois`}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+
+                <div className="card p-4">
+                  <ResultRow label="Mensualité actuelle"     value={fmt(refi.currentMonthly)} />
+                  <ResultRow label="Nouvelle mensualité"     value={fmt(refi.newMonthly)} />
+                  <ResultRow
+                    label="Économie mensuelle"
+                    value={refi.monthlySavings > 0 ? fmt(refi.monthlySavings) : "—"}
+                    sub={refi.monthlySavings > 0 ? `×${reRemaining * 12} mois` : undefined}
+                  />
+                  <ResultRow label="IRA estimée" value={fmt(refi.ira)} sub="3% capital ou 6 mois intérêts" />
+                </div>
+
+                <div className="rounded-xl bg-purple-50 border border-purple-100 px-4 py-3 text-xs text-purple-700">
+                  Vérifiez avec votre banque si l'IRA est incluse dans le nouveau prêt ou à régler au comptant.
+                </div>
               </div>
             </motion.div>
           )}
