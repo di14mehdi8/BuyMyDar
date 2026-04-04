@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight, Clock, User, Tag, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Tag, ArrowUpRight, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/getDictionary";
 
@@ -13,7 +12,8 @@ interface InsightsGridProps {
 
 const ARTICLES = [
   {
-    slug: "ouvrir-compte-dirham-convertible-depuis-france",
+    externalUrl: "https://www.oc.gov.ma/fr/mre/ouverture-de-comptes-en-devisesen-dirhams-convertibles",
+    source: "Office des Changes",
     category: "mre",    readMinutes: 8,   emoji: "🏦",
     gradient: "from-brand-600 to-brand-900",
     titleFr: "Comment ouvrir un compte Dirham Convertible depuis la France en 2026",
@@ -22,59 +22,63 @@ const ARTICLES = [
     excerptFr: "Guide complet étape par étape pour les MRE souhaitant financer un bien au Maroc depuis la France, l'Espagne ou le Canada.",
     excerptEn: "Complete step-by-step guide for MREs wishing to finance real estate in Morocco from France, Spain, or Canada.",
     excerptAr: "دليل شامل خطوة بخطوة للمغاربة المقيمين بالخارج الراغبين في تمويل عقار بالمغرب.",
-    author: { name: "Yassine Benali", role: "Expert Crédit, Casablanca" },
+    author: { name: "Office des Changes", role: "Réglementation officielle" },
     date: "2026-03-28",
   },
   {
-    slug: "taux-fixe-vs-variable-maroc-2026",
+    externalUrl: "https://immobilier.creditdumaroc.ma/fr/taux-dinterets-fixe-ou-variable",
+    source: "Crédit du Maroc",
     category: "rates",  readMinutes: 5,   emoji: "📈",
     gradient: "from-amber-500 to-orange-700",
     titleFr: "Taux fixe vs variable au Maroc : que choisir en 2026 ?",
     titleEn: "Fixed vs Variable Rate in Morocco: What to Choose in 2026?",
     titleAr: "المعدل الثابت مقابل المتغير بالمغرب: ماذا تختار في 2026؟",
-    excerptFr: "Analyse des avantages de chaque type avec les projections BAM 2026-2028.",
-    excerptEn: "Analysis of each rate type's advantages with BAM projections 2026-2028.",
-    excerptAr: "تحليل مزايا كل نوع مع توقعات بنك المغرب 2026-2028.",
-    author: { name: "Karima Tahiri", role: "Analyste, Rabat" },
+    excerptFr: "Comparaison des avantages de chaque type avec les indices de référence BAM (BDT et TMP) pour la révision des taux variables.",
+    excerptEn: "Comparison of each rate type's advantages with BAM reference indices (BDT and TMP) for variable rate revisions.",
+    excerptAr: "مقارنة مزايا كل نوع مع مؤشرات بنك المغرب المرجعية لمراجعة المعدلات المتغيرة.",
+    author: { name: "Crédit du Maroc", role: "Banque officielle" },
     date: "2026-03-20",
   },
   {
-    slug: "dossier-credit-mre-documents-2026",
+    externalUrl: "https://www.oc.gov.ma/fr/mre/credits-pour-lacquisition-ou-la-construction-de-biens-immeubles",
+    source: "Office des Changes",
     category: "mre",    readMinutes: 6,   emoji: "📋",
     gradient: "from-emerald-500 to-green-700",
-    titleFr: "Dossier de crédit MRE : liste complète des documents",
-    titleEn: "MRE Credit File: Complete Document Checklist",
-    titleAr: "ملف قرض المغاربة بالخارج: قائمة كاملة بالوثائق",
-    excerptFr: "Liste exhaustive des documents requis et astuces pour accélérer le traitement.",
-    excerptEn: "Exhaustive document list with tips to speed up bank processing.",
-    excerptAr: "قائمة شاملة بالوثائق مع نصائح لتسريع المعالجة.",
-    author: { name: "Yassine Benali", role: "Expert Crédit, Casablanca" },
+    titleFr: "Dossier de crédit MRE : conditions réglementaires complètes",
+    titleEn: "MRE Credit File: Full Regulatory Conditions",
+    titleAr: "ملف قرض المغاربة بالخارج: الشروط التنظيمية الكاملة",
+    excerptFr: "Apport minimum 30% en devises, garanties requises et obligations déclaratives selon les articles 793–796 de la réglementation des changes.",
+    excerptEn: "Minimum 30% foreign-currency down payment, required guarantees and reporting obligations per articles 793–796 of exchange regulations.",
+    excerptAr: "حد أدنى 30% مساهمة بالعملة الأجنبية، والضمانات المطلوبة وفق المواد 793-796 من لوائح الصرف.",
+    author: { name: "Office des Changes", role: "Réglementation officielle" },
     date: "2026-03-15",
   },
   {
-    slug: "rachat-credit-immobilier-maroc-guide",
+    externalUrl: "https://immobilier.creditdumaroc.ma/fr/racheter-un-cr%C3%A9dit",
+    source: "Crédit du Maroc",
     category: "guide",  readMinutes: 7,   emoji: "🔄",
     gradient: "from-violet-500 to-purple-800",
     titleFr: "Rachat de crédit immobilier au Maroc : est-ce rentable ?",
     titleEn: "Mortgage Refinancing in Morocco: Is it Worth It?",
     titleAr: "إعادة شراء القرض العقاري بالمغرب: هل هو مربح؟",
-    excerptFr: "Comment calculer le gain d'un rachat de crédit et quelles banques proposent les meilleures conditions.",
-    excerptEn: "How to calculate refinancing gains and which banks offer the best conditions.",
-    excerptAr: "كيف تحسب ربح إعادة الشراء وأي البنوك تقدم أفضل الشروط.",
-    author: { name: "Mohammed Benkirane", role: "Courtier, Marrakech" },
+    excerptFr: "Processus en 4 étapes, délai de réflexion légal de 10 jours et calcul du gain financier selon les conditions actuelles du marché.",
+    excerptEn: "4-step process, 10-day legal cooling-off period and financial gain calculation based on current market conditions.",
+    excerptAr: "عملية من 4 خطوات، مهلة قانونية للتفكير 10 أيام وحساب المكسب المالي وفق أحدث أسعار السوق.",
+    author: { name: "Crédit du Maroc", role: "Banque officielle" },
     date: "2026-03-10",
   },
   {
-    slug: "combien-emprunter-salaire-3000-euros",
-    category: "guide",  readMinutes: 4,   emoji: "💰",
+    externalUrl: "https://www.bkam.ma/Marches/Taux-d-interet/Reference-pour-la-revision-des-taux-variables",
+    source: "Bank Al-Maghrib",
+    category: "rates",  readMinutes: 4,   emoji: "💰",
     gradient: "from-rose-500 to-pink-700",
-    titleFr: "Combien puis-je emprunter avec un salaire de 3 000 € ?",
-    titleEn: "How Much Can I Borrow in Morocco with a 3,000 € Salary?",
-    titleAr: "كم يمكنني اقتراضه براتب 3000 يورو؟",
-    excerptFr: "Calcul DTI pour un salarié MRE avec simulation sur 15, 20 et 25 ans.",
-    excerptEn: "DTI calculation for MRE employees with 15, 20 and 25-year simulations.",
-    excerptAr: "حساب DTI لموظف مغربي بالخارج مع محاكاة لـ 15 و20 و25 سنة.",
-    author: { name: "Karima Tahiri", role: "Analyste, Rabat" },
+    titleFr: "Taux de référence BAM pour la révision des crédits variables",
+    titleEn: "BAM Reference Rates for Variable Mortgage Revision",
+    titleAr: "معدلات مرجعية لبنك المغرب لمراجعة القروض المتغيرة",
+    excerptFr: "Indices BDT et TMP publiés mensuellement par Bank Al-Maghrib. La source officielle utilisée par toutes les banques marocaines pour réviser vos mensualités.",
+    excerptEn: "BDT and TMP indices published monthly by Bank Al-Maghrib. The official source used by all Moroccan banks to revise variable mortgage payments.",
+    excerptAr: "مؤشرات BDT وTMP التي ينشرها بنك المغرب شهريًا. المصدر الرسمي الذي تستخدمه جميع البنوك المغربية لمراجعة الأقساط.",
+    author: { name: "Bank Al-Maghrib", role: "Banque Centrale du Maroc" },
     date: "2026-03-05",
   },
 ];
@@ -108,12 +112,14 @@ export function InsightsGrid({ lang, dict }: InsightsGridProps) {
           <h2 id="insights-heading" className="heading-2">{dict.title}</h2>
           <p className="text-slate-500 text-sm mt-1">{dict.subtitle}</p>
         </div>
-        <Link
-          href={`/${lang}/blog`}
+        <a
+          href="https://www.bkam.ma/Publications-et-statistiques/Publications-institutionnelles"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors whitespace-nowrap"
         >
-          Tous les articles <ArrowRight className="w-4 h-4" />
-        </Link>
+          Publications BAM <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
 
       {/* Bento grid */}
@@ -151,28 +157,25 @@ export function InsightsGrid({ lang, dict }: InsightsGridProps) {
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <User className="w-4 h-4 text-white" />
-                  </div>
                   <div>
                     <p className="text-white text-xs font-semibold">{featured.author.name}</p>
                     <p className="text-white/55 text-[10px]">{featured.author.role}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 text-white/60 text-xs">
-                  <Clock className="w-3.5 h-3.5" />
-                  {featured.readMinutes} {dict.min_read}
+                  <ExternalLink className="w-3 h-3" />
+                  {featured.source}
                 </div>
               </div>
             </div>
           </div>
-          <Link href={`/${lang}/blog/${featured.slug}`} className="absolute inset-0" aria-label={T(featured)} />
+          <a href={featured.externalUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0" aria-label={T(featured)} />
         </motion.article>
 
         {/* Remaining articles */}
         {rest.map((article, i) => (
           <motion.article
-            key={article.slug}
+            key={article.externalUrl}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -195,14 +198,14 @@ export function InsightsGrid({ lang, dict }: InsightsGridProps) {
             </div>
             <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-50">
               <span className="flex items-center gap-1 text-slate-400 text-[10px]">
-                <Clock className="w-3 h-3" />{article.readMinutes} {dict.min_read}
+                <ExternalLink className="w-3 h-3" />{article.source}
               </span>
               <span className="text-[11px] font-semibold text-brand-600 flex items-center gap-0.5
                                group-hover:gap-1.5 transition-all">
                 {dict.read_more} <ArrowUpRight className="w-3 h-3" />
               </span>
             </div>
-            <Link href={`/${lang}/blog/${article.slug}`} className="absolute inset-0" aria-label={T(article)} />
+            <a href={article.externalUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0" aria-label={T(article)} />
           </motion.article>
         ))}
 

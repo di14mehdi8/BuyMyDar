@@ -52,9 +52,9 @@ function Slider({
           {hint && <span className="text-xs text-slate-400 ms-1">{hint}</span>}
         </div>
       </div>
-      <div className="relative pb-1">
-        {/* Track fill */}
-        <div className="absolute top-1.5 left-0 h-1 rounded-full bg-brand-600 pointer-events-none transition-all"
+      <div className="relative">
+        {/* Track fill — top-[8px] centers a 4px bar in the 20px-tall input */}
+        <div className="absolute top-[8px] left-0 h-1 rounded-full bg-brand-600 pointer-events-none transition-all"
              style={{ width: `${pct}%` }} />
         <input
           type="range" min={min} max={max} step={step} value={value}
@@ -450,7 +450,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                 Simulation pour <strong className="text-slate-700">{fmt(principal)}</strong> sur <strong className="text-slate-700">{termYears} ans</strong>
               </p>
               <div className="space-y-2">
-                {BANK_RATES.map((bank) => {
+                {BANK_RATES.map((bank, i) => {
                   const sim = calculateMortgage({ principal, annualRate: bank.fixedRate, termMonths: termYears * 12, insuranceRate });
                   const isBest = bank.id === bestBank.id;
                   const barW = 100 - ((bank.fixedRate - Math.min(...BANK_RATES.map(b => b.fixedRate))) / (Math.max(...BANK_RATES.map(b => b.fixedRate)) - Math.min(...BANK_RATES.map(b => b.fixedRate)))) * 80;
