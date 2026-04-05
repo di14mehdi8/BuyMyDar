@@ -101,7 +101,8 @@ export interface BankRateEntry {
   fixedRateMin?: number;       // best rate (civil servants / top profiles)
   variableRate: number;
   maxDurationYears: number;
-  maxDurationMREYears?: number; // extended duration for MREs
+  maxDurationMREYears?: number;   // extended duration for MREs
+  maxDurationYouthYears?: number; // extended duration for under-35 offers
   maxAmountMAD: number;
   maxLTVResident: number;      // e.g. 1.0 = 100%
   maxLTVMRE?: number;          // e.g. 1.1 = 110%
@@ -230,6 +231,7 @@ export const BANK_RATES: BankRateEntry[] = [
     fixedRateMin: 0.0410,
     variableRate: 0.0420,
     maxDurationYears: 25,
+    maxDurationYouthYears: 30,
     maxAmountMAD: 3_500_000,
     maxLTVResident: 1.0,
     mreEligible: true,

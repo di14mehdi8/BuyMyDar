@@ -21,18 +21,18 @@ type SortKey = "fixedRate" | "variableRate" | "maxDurationYears" | "maxAmountMAD
 type SortDir = "asc" | "desc";
 type Filter = "all" | "mre" | "youth" | "state-aid";
 
-const FILTER_LABELS: Record<Filter, string> = {
-  all:        "Toutes les banques",
-  mre:        "MRE",
-  youth:      "Moins de 35 ans",
-  "state-aid": "Daam Sakane",
-};
-
 export function BankDirectory({ lang, dict }: BankDirectoryProps) {
   const [filter,  setFilter]  = useState<Filter>("all");
   const [sortKey, setSortKey] = useState<SortKey>("fixedRate");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [hovered, setHovered] = useState<string | null>(null);
+
+  const FILTER_LABELS: Record<Filter, string> = {
+    all:         dict.filter_all,
+    mre:         dict.filter_mre,
+    youth:       dict.filter_youth,
+    "state-aid": dict.filter_state_aid,
+  };
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) setSortDir(d => d === "asc" ? "desc" : "asc");
@@ -58,13 +58,13 @@ export function BankDirectory({ lang, dict }: BankDirectoryProps) {
   ).format(new Date("2026-04-01"));
 
   const colHeaders: { key: SortKey | null; label: string }[] = [
-    { key: null,               label: "Banque" },
-    { key: "fixedRate",        label: "Taux fixe" },
-    { key: "variableRate",     label: "Taux variable" },
-    { key: "maxDurationYears", label: "Durée max" },
-    { key: "maxAmountMAD",     label: "Montant max" },
-    { key: null,               label: "MRE" },
-    { key: null,               label: "Offres spéciales" },
+    { key: null,               label: dict.columns.bank },
+    { key: "fixedRate",        label: dict.columns.rate_fixed },
+    { key: "variableRate",     label: dict.columns.rate_variable },
+    { key: "maxDurationYears", label: dict.columns.max_duration },
+    { key: "maxAmountMAD",     label: dict.columns.max_amount },
+    { key: null,               label: dict.columns.mre },
+    { key: null,               label: dict.columns.special_offers },
     { key: null,               label: "" },
   ];
 
@@ -75,7 +75,7 @@ export function BankDirectory({ lang, dict }: BankDirectoryProps) {
         <div>
           <p className="section-label mb-2">
             <span className="w-4 h-px bg-brand-600 inline-block" />
-            {dict.updated} {updatedDate} · Source : BAM + sites officiels
+            {dict.updated} {updatedDate} · {dict.source_label}
           </p>
           <h2 id="banks-heading" className="heading-2">{dict.title}</h2>
           <p className="text-slate-500 text-sm mt-1">{dict.subtitle}</p>
@@ -201,13 +201,14 @@ function BankRow({
     ? `${(bank.maxAmountMAD / 1_000_000).toFixed(0)}M`
     : `${(bank.maxAmountMAD / 1_000).toFixed(0)}K`;
 
-  // Show the extended MRE duration if it differs from standard
-  const durationLabel = bank.maxDurationMREYears && bank.maxDurationMREYears > bank.maxDurationYears
-    ? `${bank.maxDurationYears} ans`
-    : `${bank.maxDurationYears} ans`;
+  const durationLabel = `${bank.maxDurationYears} ${dict.years}`;
 
   const mreExtension = bank.maxDurationMREYears && bank.maxDurationMREYears > bank.maxDurationYears
-    ? `${bank.maxDurationMREYears} ans MRE`
+    ? `${bank.maxDurationMREYears} ${dict.mre_years_suffix}`
+    : null;
+
+  const youthExtension = bank.maxDurationYouthYears && bank.maxDurationYouthYears > bank.maxDurationYears
+    ? `${bank.maxDurationYouthYears} ${dict.youth_years_suffix}`
     : null;
 
   return (
@@ -235,7 +236,7 @@ function BankRow({
               <span className="font-semibold text-slate-900 whitespace-nowrap">{bank.name}</span>
               {isBest && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">
-                  <Star className="w-2.5 h-2.5 fill-amber-500" /> Meilleur taux
+                  <Star className="w-2.5 h-2.5 fill-amber-500" /> {dict.best_rate}
                 </span>
               )}
               {bank.daamsakan && (
@@ -245,7 +246,7 @@ function BankRow({
               )}
             </div>
             <span className="text-xs text-slate-400">
-              #{rank} · taux fixe min {((bank.fixedRateMin ?? bank.fixedRate) * 100).toFixed(2)}%
+              #{rank} · {dict.min_rate_label} {((bank.fixedRateMin ?? bank.fixedRate) * 100).toFixed(2)}%
             </span>
           </div>
         </div>
@@ -259,7 +260,7 @@ function BankRow({
           </span>
           {bank.fixedRateMin && bank.fixedRateMin < bank.fixedRate && (
             <p className="text-[10px] text-emerald-600 font-medium">
-              dès {(bank.fixedRateMin * 100).toFixed(2)}% ✦
+              {dict.from_rate} {(bank.fixedRateMin * 100).toFixed(2)}% ✦
             </p>
           )}
         </div>
@@ -276,6 +277,9 @@ function BankRow({
         {mreExtension && (
           <p className="text-[10px] text-blue-600 font-semibold">{mreExtension} 🌍</p>
         )}
+        {youthExtension && (
+          <p className="text-[10px] text-amber-600 font-semibold">{youthExtension} 🎯</p>
+        )}
       </td>
 
       {/* Max amount */}
@@ -290,11 +294,11 @@ function BankRow({
       <td className="py-4 px-4">
         {bank.mreEligible ? (
           <span className="badge-green">
-            <Check className="w-3 h-3" /> Oui
+            <Check className="w-3 h-3" /> {dict.mre_yes}
           </span>
         ) : (
           <span className="badge-slate">
-            <X className="w-3 h-3" /> Non
+            <X className="w-3 h-3" /> {dict.mre_no}
           </span>
         )}
       </td>
