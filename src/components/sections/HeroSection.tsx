@@ -41,7 +41,7 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
         <div
           className="absolute inset-0 opacity-[0.035]"
           style={{
-            backgroundImage: `linear-gradient(#1565C0 1px, transparent 1px), linear-gradient(90deg, #1565C0 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(#1E3A6E 1px, transparent 1px), linear-gradient(90deg, #1E3A6E 1px, transparent 1px)`,
             backgroundSize: "48px 48px",
           }}
         />
@@ -112,7 +112,7 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
             <motion.div
               variants={fadeUp}
               className="col-span-2 card p-6 border-brand-100"
-              style={{ background: "linear-gradient(135deg,#1565C0 0%,#0D47A1 100%)" }}
+              style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}
             >
               <p className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">
                 🏆 Meilleur taux fixe du marché

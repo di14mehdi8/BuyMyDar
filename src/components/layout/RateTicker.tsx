@@ -30,7 +30,7 @@ export function RateTicker({ lang, dict }: RateTickerProps) {
       style={{
         top: "var(--header-height)",
         height: "var(--ticker-height)",
-        background: "linear-gradient(90deg,#0D47A1 0%,#1565C0 40%,#1976D2 100%)",
+        background: "linear-gradient(90deg,#09152A 0%,#1E3A6E 40%,#3358CB 100%)",
       }}
       role="marquee"
       aria-label={`${dict.label}: ${avgPct}%`}

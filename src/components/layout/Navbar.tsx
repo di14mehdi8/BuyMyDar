@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, BarChart2, BookOpen, Users, ChevronDown, Map, FileText } from "lucide-react";
+import Image from "next/image";
+import { Menu, X, BarChart2, BookOpen, Users, ChevronDown, Map, FileText } from "lucide-react";
 import { locales, localeNames, localeFlags, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -32,8 +33,8 @@ export function Navbar({ lang, dict }: NavbarProps) {
 
   const links = [
     { href: `/${lang}#simulator`, label: dict.simulator, icon: BarChart2 },
-    { href: `/${lang}#banks`,     label: dict.banks,     icon: Home },
-    { href: `/${lang}/guide`,     label: "Guide",         icon: Map },
+    { href: `/${lang}#banks`,     label: dict.banks,     icon: BarChart2 },
+    { href: `/${lang}/guide`,     label: "Guide",        icon: Map },
     { href: `/${lang}/mre`,       label: dict.mre,       icon: Users },
     { href: `/${lang}#insights`,  label: dict.insights,  icon: BookOpen },
     { href: `/${lang}/mourabaha`, label: "Mourabaha",    icon: FileText },
@@ -51,14 +52,16 @@ export function Navbar({ lang, dict }: NavbarProps) {
 
         {/* Logo */}
         <Link href={`/${lang}`} className="flex items-center gap-2.5 shrink-0 group">
-          <div className="relative w-9 h-9">
-            <div className="absolute inset-0 bg-brand-600 rounded-xl rotate-2 group-hover:rotate-6 transition-transform duration-300" />
-            <div className="absolute inset-0 bg-brand-700 rounded-xl flex items-center justify-center">
-              <Home className="w-4 h-4 text-white" strokeWidth={2.5} />
-            </div>
-          </div>
-          <span className="font-bold text-lg tracking-tight">
-            Buy<span className="text-brand-600">My</span>Dar
+          <Image
+            src={scrolled ? "/logo.png" : "/logo.png"}
+            alt="BuyMyDar logo"
+            width={36}
+            height={36}
+            className="h-9 w-auto object-contain group-hover:scale-105 transition-transform duration-200"
+            priority
+          />
+          <span className="font-bold text-lg tracking-tight" style={{ color: "#1E3A6E" }}>
+            Buy<span style={{ color: "#3358CB" }}>My</span>Dar
           </span>
         </Link>
 

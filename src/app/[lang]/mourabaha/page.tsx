@@ -208,7 +208,7 @@ export default async function MourabahaPage({ params }: Props) {
         <Link
           href={`/${lang}#simulator`}
           className="rounded-2xl p-6 text-white text-center"
-          style={{ background: "linear-gradient(135deg,#1565C0 0%,#0D47A1 100%)" }}
+          style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}
         >
           <p className="font-bold mb-1">Comparer les taux classiques</p>
           <p className="text-blue-200 text-xs mb-3">Simulez votre crédit immobilier standard</p>

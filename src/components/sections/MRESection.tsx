@@ -36,7 +36,7 @@ export function MRESection({ lang, dict }: MRESectionProps) {
     <section id="mre" className="scroll-mt-28" aria-labelledby="mre-heading">
       <div
         className="relative rounded-3xl overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#0D1B2A 0%,#0D47A1 60%,#1565C0 100%)" }}
+        style={{ background: "linear-gradient(135deg,#040B17 0%,#1E3A6E 60%,#3358CB 100%)" }}
       >
         {/* Decorative blobs */}
         <div className="absolute -top-24 -end-24 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />

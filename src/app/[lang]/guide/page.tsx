@@ -183,7 +183,7 @@ export default async function GuidePage({ params }: Props) {
 
       {/* CTA */}
       <div className="mt-12 rounded-2xl p-8 text-white text-center"
-           style={{ background: "linear-gradient(135deg,#1565C0 0%,#0D47A1 100%)" }}>
+           style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}>
         <h2 className="text-xl font-bold mb-2">Prêt à simuler votre prêt ?</h2>
         <p className="text-blue-200 text-sm mb-5">
           Comparez les 8 banques marocaines et calculez vos mensualités en temps réel.

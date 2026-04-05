@@ -363,7 +363,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.15 }}
                   className="rounded-2xl p-5 text-white"
-                  style={{ background: "linear-gradient(135deg,#1565C0 0%,#0D47A1 100%)" }}
+                  style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}
                 >
                   <p className="text-blue-200 text-xs font-bold uppercase tracking-wider mb-2">
                     {dict.result_monthly}
@@ -469,8 +469,8 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   <AreaChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -10 }}>
                     <defs>
                       <linearGradient id="gBalance" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%"  stopColor="#1565C0" stopOpacity={0.15} />
-                        <stop offset="95%" stopColor="#1565C0" stopOpacity={0} />
+                        <stop offset="5%"  stopColor="#1E3A6E" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#1E3A6E" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient id="gInterest" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%"  stopColor="#F59E0B" stopOpacity={0.15} />
@@ -484,7 +484,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                       contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: "12px" }}
                       formatter={(v: number) => [fmt(v / (CURRENCY_RATES[currency] ?? 1)), ""]}
                     />
-                    <Area type="monotone" dataKey="balance"  name="Capital restant" stroke="#1565C0" strokeWidth={2} fill="url(#gBalance)" />
+                    <Area type="monotone" dataKey="balance"  name="Capital restant" stroke="#1E3A6E" strokeWidth={2} fill="url(#gBalance)" />
                     <Area type="monotone" dataKey="interest" name="Intérêts annuels" stroke="#F59E0B" strokeWidth={2} fill="url(#gInterest)" />
                   </AreaChart>
                 </ResponsiveContainer>

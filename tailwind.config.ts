@@ -10,17 +10,23 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          50:  "#EFF6FF",
-          100: "#DBEAFE",
-          200: "#BFDBFE",
-          300: "#93C5FD",
-          400: "#60A5FA",
-          500: "#3B82F6",
-          600: "#1565C0",
-          700: "#1E40AF",
-          800: "#1E3A8A",
-          900: "#1E3073",
-          950: "#0D1B2A",
+          50:  "#EEF3FF",
+          100: "#DDE6FF",
+          200: "#C2D0FF",
+          300: "#8EA9F5",
+          400: "#5C7FE8",
+          500: "#3358CB",
+          600: "#1E3A6E",  /* logo primary navy */
+          700: "#162D56",
+          800: "#0F2040",
+          900: "#09152A",
+          950: "#040B17",
+        },
+        accent: {
+          400: "#56B462",
+          500: "#3A9648",
+          600: "#2D7A3A",  /* logo window-pane green */
+          700: "#1F5928",
         },
         surface: {
           DEFAULT: "#ffffff",
