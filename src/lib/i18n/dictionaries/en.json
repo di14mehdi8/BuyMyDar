@@ -3,7 +3,9 @@
     "simulator": "Simulator",
     "banks": "Banks",
     "insights": "Insights",
-    "mre": "MRE Guide",
+    "mre": "Guides",
+    "guide": "Guide",
+    "mourabaha": "Mourabaha",
     "login": "Sign In",
     "cta": "Estimate my loan"
   },
@@ -11,18 +13,23 @@
     "badge": "🇲🇦 Morocco's #1 Mortgage Comparison Platform",
     "headline": "Find the best",
     "headline_accent": "mortgage rate in Morocco",
-    "subheadline": "Compare rates from all Moroccan banks in real-time. Built specifically for MREs living abroad.",
+    "subheadline": "Compare rates from all Moroccan banks in real-time. For residents and Moroccans living abroad (MRE).",
     "cta_primary": "Simulate my loan",
     "cta_secondary": "See today's rates",
     "trust_labels": {
       "banks": "8 banks compared — more coming",
-      "mre": "Available for MREs",
+      "mre": "Residents & MRE",
       "secure": "100% free & secure"
     }
   },
   "ticker": {
     "label": "Today's average rate",
     "cta": "See offers"
+  },
+  "tabs": {
+    "compare": "Compare",
+    "news": "News",
+    "guides": "Guides"
   },
   "simulator": {
     "title": "Mortgage Simulator",
@@ -66,7 +73,7 @@
   },
   "insights": {
     "title": "Insights & News",
-    "subtitle": "Everything you need to know about your Moroccan property project",
+    "subtitle": "Everything you need to know about buying property in Morocco",
     "read_more": "Read article",
     "min_read": "min read",
     "verified_by": "Verified by",
@@ -78,8 +85,8 @@
     }
   },
   "mre_section": {
-    "title": "Are you an MRE?",
-    "subtitle": "We have specific solutions for Moroccans Residing Abroad",
+    "title": "Your property project in Morocco",
+    "subtitle": "Tailored solutions for residents and Moroccans living abroad (MRE)",
     "features": {
       "dirham": {
         "title": "Convertible Dirham Account",
@@ -104,6 +111,17 @@
   },
   "footer": {
     "tagline": "Morocco's reference platform for mortgage comparison.",
+    "disclaimer": "Indicative simulation. Not licensed financial advice.",
+    "cols": {
+      "simulator": "Simulator",
+      "banks": "Banks",
+      "links": {
+        "simulator": "Mortgage simulator",
+        "compare": "Compare banks",
+        "guide": "Buying guide",
+        "insights": "Insights & news"
+      }
+    },
     "links": {
       "about": "About",
       "contact": "Contact",
@@ -130,7 +148,7 @@
       },
       {
         "q": "What is the maximum duration for a mortgage in Morocco?",
-        "a": "The maximum duration is generally 25 years (300 months) for residents and 20 years for MREs. Some banks may go up to 30 years depending on the profile."
+        "a": "The maximum duration is generally 25 years for residents and 20 years for MREs. Some banks may go up to 30 years depending on the profile."
       },
       {
         "q": "What is a Convertible Dirham Account?",

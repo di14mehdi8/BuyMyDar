@@ -15,6 +15,8 @@ interface NavbarProps {
     banks: string;
     insights: string;
     mre: string;
+    guide: string;
+    mourabaha: string;
     login: string;
     cta: string;
   };
@@ -32,12 +34,12 @@ export function Navbar({ lang, dict }: NavbarProps) {
   }, []);
 
   const links = [
-    { href: `/${lang}#simulator`, label: dict.simulator, icon: BarChart2 },
-    { href: `/${lang}#banks`,     label: dict.banks,     icon: BarChart2 },
-    { href: `/${lang}/guide`,     label: "Guide",        icon: Map },
-    { href: `/${lang}/mre`,       label: dict.mre,       icon: Users },
-    { href: `/${lang}#insights`,  label: dict.insights,  icon: BookOpen },
-    { href: `/${lang}/mourabaha`, label: "Mourabaha",    icon: FileText },
+    { href: `/${lang}#simulator`, label: dict.simulator,  icon: BarChart2 },
+    { href: `/${lang}#banks`,     label: dict.banks,      icon: BarChart2 },
+    { href: `/${lang}/guide`,     label: dict.guide,      icon: Map },
+    { href: `/${lang}/mre`,       label: dict.mre,        icon: Users },
+    { href: `/${lang}#insights`,  label: dict.insights,   icon: BookOpen },
+    { href: `/${lang}/mourabaha`, label: dict.mourabaha,  icon: FileText },
   ];
 
   return (

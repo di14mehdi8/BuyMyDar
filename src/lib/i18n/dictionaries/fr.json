@@ -3,7 +3,9 @@
     "simulator": "Simulateur",
     "banks": "Banques",
     "insights": "Conseils",
-    "mre": "Guide MRE",
+    "mre": "Guides",
+    "guide": "Guide",
+    "mourabaha": "Mourabaha",
     "login": "Connexion",
     "cta": "Estimer mon prêt"
   },
@@ -11,18 +13,23 @@
     "badge": "🇲🇦 N°1 en comparaison immobilière au Maroc",
     "headline": "Trouvez le meilleur taux",
     "headline_accent": "immobilier au Maroc",
-    "subheadline": "Comparez les taux de toutes les banques marocaines en temps réel. Spécialement conçu pour les MRE.",
+    "subheadline": "Comparez les taux de toutes les banques marocaines en temps réel. Pour les résidents et les MRE.",
     "cta_primary": "Simuler mon crédit",
     "cta_secondary": "Voir les taux du jour",
     "trust_labels": {
       "banks": "8 banques comparées — et bientôt plus",
-      "mre": "Disponible pour les MRE",
+      "mre": "Résidents & MRE",
       "secure": "100% gratuit & sécurisé"
     }
   },
   "ticker": {
     "label": "Taux moyen aujourd'hui",
     "cta": "Voir les offres"
+  },
+  "tabs": {
+    "compare": "Comparer",
+    "news": "Actualités",
+    "guides": "Guides"
   },
   "simulator": {
     "title": "Simulateur de Crédit Immobilier",
@@ -78,8 +85,8 @@
     }
   },
   "mre_section": {
-    "title": "Vous êtes MRE ?",
-    "subtitle": "Nous avons des solutions spécifiques pour les Marocains Résidant à l'Étranger",
+    "title": "Votre projet immobilier au Maroc",
+    "subtitle": "Des solutions adaptées pour les résidents et les Marocains Résidant à l'Étranger (MRE)",
     "features": {
       "dirham": {
         "title": "Compte Dirham Convertible",
@@ -104,6 +111,17 @@
   },
   "footer": {
     "tagline": "La plateforme de référence pour le crédit immobilier au Maroc.",
+    "disclaimer": "Simulation indicative. Pas un conseil financier agréé.",
+    "cols": {
+      "simulator": "Simulateur",
+      "banks": "Banques",
+      "links": {
+        "simulator": "Simulateur crédit",
+        "compare": "Comparer les banques",
+        "guide": "Guide d'achat",
+        "insights": "Conseils & actualités"
+      }
+    },
     "links": {
       "about": "À propos",
       "contact": "Contact",

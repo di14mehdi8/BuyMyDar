@@ -124,23 +124,34 @@ export default async function GuidePage({ params }: Props) {
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-slate-400 mb-8">
         <Link href={`/${lang}`} className="hover:text-brand-600 transition-colors flex items-center gap-1">
-          <Home className="w-3 h-3" /> Accueil
+          <Home className="w-3 h-3" />
+          {lang === "ar" ? "الرئيسية" : lang === "en" ? "Home" : "Accueil"}
         </Link>
         <span>/</span>
-        <span className="text-slate-600 font-medium">Guide d'achat</span>
+        <span className="text-slate-600 font-medium">
+          {lang === "ar" ? "دليل الشراء" : lang === "en" ? "Buying Guide" : "Guide d'achat"}
+        </span>
       </nav>
 
       {/* Header */}
       <div className="mb-12">
         <p className="section-label mb-3">
-          <span className="w-4 h-px bg-brand-600 inline-block" /> 7 étapes
+          <span className="w-4 h-px bg-brand-600 inline-block" />
+          {lang === "ar" ? "٧ خطوات" : lang === "en" ? "7 steps" : "7 étapes"}
         </p>
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-4">
-          Guide complet d'achat immobilier au Maroc
+          {lang === "ar"
+            ? "الدليل الشامل لشراء عقار في المغرب"
+            : lang === "en"
+            ? "Complete Guide to Buying Property in Morocco"
+            : "Guide complet d'achat immobilier au Maroc"}
         </h1>
         <p className="text-slate-500 text-lg leading-relaxed max-w-2xl">
-          De la recherche du bien à la remise des clés — tout ce que vous devez savoir
-          pour acheter sereinement, que vous soyez résident ou MRE.
+          {lang === "ar"
+            ? "من البحث عن العقار إلى تسليم المفاتيح — كل ما تحتاج معرفته، سواء كنت مقيماً أو مغتربًا."
+            : lang === "en"
+            ? "From property search to key handover — everything you need to know, whether you are a resident or living abroad (MRE)."
+            : "De la recherche du bien à la remise des clés — tout ce que vous devez savoir, que vous soyez résident ou MRE."}
         </p>
       </div>
 
@@ -184,15 +195,22 @@ export default async function GuidePage({ params }: Props) {
       {/* CTA */}
       <div className="mt-12 rounded-2xl p-8 text-white text-center"
            style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}>
-        <h2 className="text-xl font-bold mb-2">Prêt à simuler votre prêt ?</h2>
+        <h2 className="text-xl font-bold mb-2">
+          {lang === "ar" ? "مستعد لحساب قرضك؟" : lang === "en" ? "Ready to simulate your loan?" : "Prêt à simuler votre prêt ?"}
+        </h2>
         <p className="text-blue-200 text-sm mb-5">
-          Comparez les 8 banques marocaines et calculez vos mensualités en temps réel.
+          {lang === "ar"
+            ? "قارن ٨ بنوك مغربية واحسب أقساطك الشهرية في الوقت الفعلي."
+            : lang === "en"
+            ? "Compare 8 Moroccan banks and calculate your monthly payments in real time."
+            : "Comparez les 8 banques marocaines et calculez vos mensualités en temps réel."}
         </p>
         <Link
           href={`/${lang}#simulator`}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-brand-700 font-bold text-sm hover:bg-blue-50 transition-colors shadow-lg"
         >
-          Lancer la simulation <ArrowRight className="w-4 h-4" />
+          {lang === "ar" ? "ابدأ المحاكاة" : lang === "en" ? "Start simulation" : "Lancer la simulation"}
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </main>

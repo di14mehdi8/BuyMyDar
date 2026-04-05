@@ -23,11 +23,11 @@ interface HomeTabsProps {
   dict: Dictionary;
 }
 
-const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
-  { id: "compare",   label: "Comparer",    icon: BarChart2  },
-  { id: "actualites",label: "Actualités",  icon: Newspaper  },
-  { id: "mre",       label: "Guide MRE",   icon: Globe      },
-];
+const TAB_ICONS: Record<TabId, React.ElementType> = {
+  compare:    BarChart2,
+  actualites: Newspaper,
+  mre:        Globe,
+};
 
 export function HomeTabs({ lang, dict }: HomeTabsProps) {
   const [active, setActive] = useState<TabId>("compare");
@@ -38,13 +38,14 @@ export function HomeTabs({ lang, dict }: HomeTabsProps) {
       <div className="sticky top-[var(--header-height)] z-40 bg-white/85 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex">
-            {TABS.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = active === tab.id;
+            {(["compare", "actualites", "mre"] as TabId[]).map((tabId) => {
+              const Icon = TAB_ICONS[tabId];
+              const label = tabId === "compare" ? dict.tabs.compare : tabId === "actualites" ? dict.tabs.news : dict.tabs.guides;
+              const isActive = active === tabId;
               return (
                 <button
-                  key={tab.id}
-                  onClick={() => setActive(tab.id)}
+                  key={tabId}
+                  onClick={() => setActive(tabId)}
                   className={cn(
                     "relative flex items-center gap-2 px-5 py-4 text-sm font-semibold transition-colors",
                     isActive ? "text-brand-600" : "text-slate-400 hover:text-slate-600"
@@ -53,7 +54,7 @@ export function HomeTabs({ lang, dict }: HomeTabsProps) {
                   role="tab"
                 >
                   <Icon className="w-4 h-4" />
-                  {tab.label}
+                  {label}
                   {isActive && (
                     <motion.div
                       layoutId="tab-bar-indicator"

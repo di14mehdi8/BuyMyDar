@@ -62,23 +62,34 @@ export default async function MourabahaPage({ params }: Props) {
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-slate-400 mb-8">
         <Link href={`/${lang}`} className="hover:text-brand-600 transition-colors flex items-center gap-1">
-          <Home className="w-3 h-3" /> Accueil
+          <Home className="w-3 h-3" />
+          {lang === "ar" ? "الرئيسية" : lang === "en" ? "Home" : "Accueil"}
         </Link>
         <span>/</span>
-        <span className="text-slate-600 font-medium">Financement Mourabaha</span>
+        <span className="text-slate-600 font-medium">
+          {lang === "ar" ? "تمويل المرابحة" : lang === "en" ? "Mourabaha Financing" : "Financement Mourabaha"}
+        </span>
       </nav>
 
       {/* Header */}
       <div className="mb-10">
         <p className="section-label mb-3">
-          <span className="w-4 h-px bg-emerald-600 inline-block" /> Finance participative
+          <span className="w-4 h-px bg-emerald-600 inline-block" />
+          {lang === "ar" ? "التمويل الإسلامي" : lang === "en" ? "Islamic Finance" : "Finance participative"}
         </p>
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-          Financement Mourabaha au Maroc
+          {lang === "ar"
+            ? "تمويل المرابحة في المغرب"
+            : lang === "en"
+            ? "Mourabaha Financing in Morocco"
+            : "Financement Mourabaha au Maroc"}
         </h1>
         <p className="text-slate-500 text-lg leading-relaxed max-w-2xl">
-          Une alternative au crédit immobilier classique conforme aux principes de la finance
-          islamique — sans intérêts, avec une marge bénéficiaire fixée à l'avance.
+          {lang === "ar"
+            ? "بديل للقرض العقاري الكلاسيكي وفق مبادئ التمويل الإسلامي — بدون فوائد، مع هامش ربح محدد مسبقاً."
+            : lang === "en"
+            ? "An alternative to the classic mortgage, compliant with Islamic finance principles — no interest, with a profit margin set upfront."
+            : "Une alternative au crédit immobilier classique conforme aux principes de la finance islamique — sans intérêts, avec une marge bénéficiaire fixée à l'avance."}
         </p>
       </div>
 

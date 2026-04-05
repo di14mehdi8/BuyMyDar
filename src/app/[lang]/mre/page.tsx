@@ -82,24 +82,36 @@ export default async function MREIndexPage({ params }: Props) {
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-slate-400 mb-8">
         <Link href={`/${lang}`} className="hover:text-brand-600 transition-colors flex items-center gap-1">
-          <Home className="w-3 h-3" /> Accueil
+          <Home className="w-3 h-3" />
+          {lang === "ar" ? "الرئيسية" : lang === "en" ? "Home" : "Accueil"}
         </Link>
         <span>/</span>
-        <span className="text-slate-600 font-medium">Guides MRE</span>
+        <span className="text-slate-600 font-medium">
+          {lang === "ar" ? "أدلة المغاربة بالخارج" : lang === "en" ? "MRE Guides" : "Guides MRE"}
+        </span>
       </nav>
 
       <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
           <Globe className="w-5 h-5 text-white" />
         </div>
-        <p className="section-label">Marocains Résidant à l'Étranger</p>
+        <p className="section-label">
+          {lang === "ar" ? "المغاربة المقيمون بالخارج" : lang === "en" ? "Moroccans Residing Abroad" : "Marocains Résidant à l'Étranger"}
+        </p>
       </div>
       <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-        Financer un bien au Maroc depuis l'étranger
+        {lang === "ar"
+          ? "تمويل عقار في المغرب من الخارج"
+          : lang === "en"
+          ? "Finance Property in Morocco from Abroad"
+          : "Financer un bien au Maroc depuis l'étranger"}
       </h1>
       <p className="text-slate-500 text-lg leading-relaxed mb-10 max-w-2xl">
-        Guides spécifiques par pays de résidence — documents requis, banques partenaires,
-        transferts de fonds et conditions réglementaires de l'Office des Changes.
+        {lang === "ar"
+          ? "أدلة مخصصة حسب بلد الإقامة — الوثائق المطلوبة، البنوك الشريكة، تحويل الأموال والشروط التنظيمية."
+          : lang === "en"
+          ? "Country-specific guides — required documents, partner banks, fund transfers, and regulatory requirements from the Office des Changes."
+          : "Guides spécifiques par pays de résidence — documents requis, banques partenaires, transferts de fonds et conditions réglementaires de l'Office des Changes."}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
