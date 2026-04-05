@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n/config";
 import { BANK_RATES } from "@/lib/mortgage/calculator";
 
-const baseUrl = "https://buymydar.ma";
+const baseUrl = "https://buymydar.com";
 
 // Blog slugs — in production, fetch from CMS
 const BLOG_SLUGS = [

@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const alternates: Record<string, string> = {};
   for (const [locale, tags] of Object.entries(hreflangMap)) {
     for (const tag of tags) {
-      alternates[tag] = `https://buymydar.ma/${locale}`;
+      alternates[tag] = `https://buymydar.com/${locale}`;
     }
   }
 
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       template: "%s | BuyMyDar",
     },
     description: descriptions[lang],
-    metadataBase: new URL("https://buymydar.ma"),
+    metadataBase: new URL("https://buymydar.com"),
     alternates: {
       canonical: `/${lang}`,
       languages: alternates,
@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: lang === "ar" ? "ar_MA" : lang === "fr" ? "fr_MA" : "en_US",
-      url: `https://buymydar.ma/${lang}`,
+      url: `https://buymydar.com/${lang}`,
       siteName: "BuyMyDar",
       title: titles[lang],
       description: descriptions[lang],

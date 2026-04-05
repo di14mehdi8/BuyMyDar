@@ -26,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://buymydar.ma/sitemap.xml",
-    host: "https://buymydar.ma",
+    sitemap: "https://buymydar.com/sitemap.xml",
+    host: "https://buymydar.com",
   };
 }

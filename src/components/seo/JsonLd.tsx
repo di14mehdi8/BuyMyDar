@@ -9,7 +9,7 @@ interface JsonLdProps {
 
 /** Renders all JSON-LD structured data for the homepage */
 export function JsonLd({ lang, dict }: JsonLdProps) {
-  const baseUrl = "https://buymydar.ma";
+  const baseUrl = "https://buymydar.com";
 
   // FinancialProduct schema for each bank
   const financialProducts = BANK_RATES.map((bank) => ({
