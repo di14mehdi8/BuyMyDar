@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { Locale } from "@/lib/i18n/config";
 import { CheckCircle2 } from "lucide-react";
 
+const WEB3FORMS_KEY = "e762052a-f003-4565-9792-e5b8abae9495";
+
 const CONTENT = {
   fr: {
     title: "Parlez-nous de votre projet",
@@ -180,7 +182,7 @@ export function ContactForm({ lang }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
+          access_key: WEB3FORMS_KEY,
           subject: `BuyMyDar — Nouveau contact (${lang.toUpperCase()})`,
           from_name: "BuyMyDar Contact",
           name: fields.name,
@@ -197,9 +199,11 @@ export function ContactForm({ lang }: Props) {
       if (data.success) {
         setStatus("success");
       } else {
+        console.error("Web3Forms error:", data);
         setStatus("error");
       }
-    } catch {
+    } catch (err) {
+      console.error("Submit error:", err);
       setStatus("error");
     }
   }
