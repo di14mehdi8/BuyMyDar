@@ -76,6 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: "/og-image.png",
           width: 1200,
           height: 630,
+          type: "image/png",
           alt: "BuyMyDar — Morocco Mortgage Comparison",
         },
       ],
