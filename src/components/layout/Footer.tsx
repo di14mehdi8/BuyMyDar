@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Home, Twitter, Linkedin, Facebook, Instagram, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { Twitter, Linkedin, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 
 interface FooterProps {
@@ -43,7 +44,7 @@ export function Footer({ lang, dict }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-slate-950 text-white mt-24" role="contentinfo">
+    <footer className="text-white mt-24" style={{ backgroundColor: "#09152A" }} role="contentinfo">
       {/* Top wave separator */}
       <div className="overflow-hidden leading-[0] -mb-px">
         <svg viewBox="0 0 1440 40" className="w-full h-10 fill-[#F7F8FA]">
@@ -56,12 +57,15 @@ export function Footer({ lang, dict }: FooterProps) {
           {/* Brand column */}
           <div className="md:col-span-2 space-y-5">
             <Link href={`/${lang}`} className="flex items-center gap-2.5 group w-fit">
-              <div className="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center
-                              group-hover:bg-brand-500 transition-colors">
-                <Home className="w-4 h-4 text-white" strokeWidth={2.5} />
-              </div>
-              <span className="font-bold text-xl">
-                Buy<span className="text-brand-400">My</span>Dar
+              <Image
+                src="/logo-white.png"
+                alt="BuyMyDar"
+                width={36}
+                height={36}
+                className="h-9 w-auto object-contain group-hover:opacity-80 transition-opacity"
+              />
+              <span className="font-bold text-xl text-white">
+                Buy<span style={{ color: "#8EA9F5" }}>My</span>Dar
               </span>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
