@@ -21,6 +21,188 @@ import type { Dictionary } from "@/lib/i18n/getDictionary";
 
 interface SimulatorProps { lang: string; dict: Dictionary["simulator"]; }
 type Currency = "MAD" | "EUR" | "USD";
+
+/* ── Inline translations for strings not in the main dict ───────────── */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const I18N: Record<string, Record<string, any>> = {
+  fr: {
+    tab_borrowing: "Capacité d'emprunt",
+    tab_refinancing: "Rachat de crédit",
+    per_month: "/mois",
+    annual: "annuel",
+    fixed: "fixe",
+    years: "ans",
+    months: "mois",
+    min_income: "Revenu min. requis",
+    dti_note: "Pour un taux d'effort de 33% (norme BAM)",
+    saved_vs_avg: "économisés vs. taux moyen",
+    above_avg: "au-dessus du taux moyen",
+    best_offer: "Meilleure offre",
+    lowest_rate: "Taux le plus bas",
+    how_calc: "Comment est calculée cette simulation ?",
+    formula: "Formule",
+    formula_desc: "P = capital · r = taux mensuel · n = mensualités. Assurance sur capital initial (BAM).",
+    export_csv: "Exporter CSV",
+    chart_balance: "Capital restant",
+    chart_interest: "Intérêts annuels",
+    tbl_year: "Année", tbl_payment: "Mensualité", tbl_principal: "Capital",
+    tbl_interest: "Intérêts", tbl_balance: "Restant dû",
+    sim_for: "Simulation pour", over: "sur", years_lbl: "ans",
+    bc_salary: "Revenu mensuel net",
+    bc_other: "Autres revenus (loyers, dividendes…)",
+    bc_debts: "Charges de crédit existantes",
+    bc_term: "Durée souhaitée",
+    bc_rate: "Taux annuel",
+    bc_title: "Capacité d'emprunt maximale",
+    bc_sub: "capital empruntable (assurance incluse)",
+    bc_max_monthly: "Mensualité max (33% DTI)",
+    bc_dti: "Taux d'effort ≤ 33% (norme BAM)",
+    bc_total_income: "Revenu total pris en compte",
+    bc_deductions: "Charges déduites",
+    bc_available: "Mensualité disponible",
+    bc_capital: "Capital (taux sélectionné)",
+    bc_over_at: (y: number, r: number) => `sur ${y} ans à ${r}%`,
+    bc_best_bank: (y: number) => `Avec la meilleure banque actuelle (CIH 4.45%) sur ${y} ans :`,
+    re_capital: "Capital restant dû",
+    re_current_rate: "Taux actuel",
+    re_new_rate: "Nouveau taux proposé",
+    re_remaining: "Durée restante",
+    ira_title: "IRA (Indemnité de remboursement anticipé)",
+    ira_desc: "Plafonnée par BAM au minimum de : 3% du capital restant dû ou 6 mois d'intérêts.",
+    ira_your: "Votre IRA estimée :",
+    re_savings_title: "Économie totale estimée",
+    re_no_savings: "Rachat non rentable",
+    re_after_ira: (v: string) => `après remboursement de l'IRA (${v})`,
+    re_not_worth: "Le nouveau taux est supérieur ou égal à l'actuel",
+    re_breakeven: "Point mort",
+    re_months: (n: number) => `${n} mois`,
+    re_current_monthly: "Mensualité actuelle",
+    re_new_monthly: "Nouvelle mensualité",
+    re_monthly_savings: "Économie mensuelle",
+    re_ira_row: "IRA estimée",
+    re_ira_sub: "3% capital ou 6 mois intérêts",
+    re_check: "Vérifiez avec votre banque si l'IRA est incluse dans le nouveau prêt ou à régler au comptant.",
+    reset: "Réinitialiser",
+  },
+  en: {
+    tab_borrowing: "Borrowing Capacity",
+    tab_refinancing: "Refinancing",
+    per_month: "/month",
+    annual: "annual",
+    fixed: "fixed",
+    years: "years",
+    months: "months",
+    min_income: "Min. income required",
+    dti_note: "For a 33% debt-to-income ratio (BAM standard)",
+    saved_vs_avg: "saved vs. average rate",
+    above_avg: "above average rate",
+    best_offer: "Best offer",
+    lowest_rate: "Lowest rate",
+    how_calc: "How is this simulation calculated?",
+    formula: "Formula",
+    formula_desc: "P = principal · r = monthly rate · n = payments. Insurance on initial capital (BAM).",
+    export_csv: "Export CSV",
+    chart_balance: "Remaining balance",
+    chart_interest: "Annual interest",
+    tbl_year: "Year", tbl_payment: "Payment", tbl_principal: "Principal",
+    tbl_interest: "Interest", tbl_balance: "Balance",
+    sim_for: "Simulation for", over: "over", years_lbl: "years",
+    bc_salary: "Net monthly income",
+    bc_other: "Other income (rent, dividends…)",
+    bc_debts: "Existing debt payments",
+    bc_term: "Desired duration",
+    bc_rate: "Annual rate",
+    bc_title: "Maximum borrowing capacity",
+    bc_sub: "borrowable capital (insurance included)",
+    bc_max_monthly: "Max monthly payment (33% DTI)",
+    bc_dti: "Debt-to-income ratio ≤ 33% (BAM standard)",
+    bc_total_income: "Total income considered",
+    bc_deductions: "Deductions",
+    bc_available: "Available monthly payment",
+    bc_capital: "Capital (selected rate)",
+    bc_over_at: (y: number, r: number) => `over ${y} years at ${r}%`,
+    bc_best_bank: (y: number) => `With the best current bank (CIH 4.45%) over ${y} years:`,
+    re_capital: "Remaining capital",
+    re_current_rate: "Current rate",
+    re_new_rate: "Proposed new rate",
+    re_remaining: "Remaining duration",
+    ira_title: "IRA (Early Repayment Penalty)",
+    ira_desc: "Capped by BAM at the lower of: 3% of remaining capital or 6 months of interest.",
+    ira_your: "Your estimated IRA:",
+    re_savings_title: "Total estimated savings",
+    re_no_savings: "Refinancing not profitable",
+    re_after_ira: (v: string) => `after repaying the IRA (${v})`,
+    re_not_worth: "The new rate is higher than or equal to the current one",
+    re_breakeven: "Break-even",
+    re_months: (n: number) => `${n} months`,
+    re_current_monthly: "Current monthly payment",
+    re_new_monthly: "New monthly payment",
+    re_monthly_savings: "Monthly savings",
+    re_ira_row: "Estimated IRA",
+    re_ira_sub: "3% capital or 6 months interest",
+    re_check: "Check with your bank if the IRA is included in the new loan or to be paid upfront.",
+    reset: "Reset",
+  },
+  ar: {
+    tab_borrowing: "قدرة الاقتراض",
+    tab_refinancing: "إعادة التمويل",
+    per_month: "/شهر",
+    annual: "سنوي",
+    fixed: "ثابت",
+    years: "سنوات",
+    months: "أشهر",
+    min_income: "الدخل الأدنى المطلوب",
+    dti_note: "لنسبة مديونية 33% (معيار BAM)",
+    saved_vs_avg: "وفرت مقارنة بالمعدل المتوسط",
+    above_avg: "أعلى من المعدل المتوسط",
+    best_offer: "أفضل عرض",
+    lowest_rate: "أدنى معدل",
+    how_calc: "كيف يُحسب هذا المحاكي؟",
+    formula: "الصيغة",
+    formula_desc: "م = أ × ر(١+ر)^ن / [(١+ر)^ن − ١]. التأمين على رأس المال الأولي (BAM).",
+    export_csv: "تصدير CSV",
+    chart_balance: "الرصيد المتبقي",
+    chart_interest: "الفوائد السنوية",
+    tbl_year: "السنة", tbl_payment: "القسط", tbl_principal: "الأصل",
+    tbl_interest: "الفوائد", tbl_balance: "الرصيد",
+    sim_for: "محاكاة لـ", over: "على مدى", years_lbl: "سنوات",
+    bc_salary: "صافي الدخل الشهري",
+    bc_other: "دخل آخر (إيجار، أرباح…)",
+    bc_debts: "أقساط قروض موجودة",
+    bc_term: "المدة المطلوبة",
+    bc_rate: "المعدل السنوي",
+    bc_title: "الحد الأقصى لقدرة الاقتراض",
+    bc_sub: "رأس المال القابل للاقتراض (شامل التأمين)",
+    bc_max_monthly: "الحد الأقصى للقسط (33% DTI)",
+    bc_dti: "نسبة المديونية ≤ 33% (معيار BAM)",
+    bc_total_income: "إجمالي الدخل المحتسب",
+    bc_deductions: "الخصومات",
+    bc_available: "القسط الشهري المتاح",
+    bc_capital: "رأس المال (المعدل المختار)",
+    bc_over_at: (y: number, r: number) => `على ${y} سنة بمعدل ${r}%`,
+    bc_best_bank: (y: number) => `مع أفضل بنك حالي (CIH 4.45%) على ${y} سنة:`,
+    re_capital: "رأس المال المتبقي",
+    re_current_rate: "المعدل الحالي",
+    re_new_rate: "المعدل الجديد المقترح",
+    re_remaining: "المدة المتبقية",
+    ira_title: "غرامة السداد المبكر (IRA)",
+    ira_desc: "محددة بـ BAM بأدنى قيمة: 3% من رأس المال أو 6 أشهر فوائد.",
+    ira_your: "غرامتك التقديرية:",
+    re_savings_title: "إجمالي الوفورات التقديرية",
+    re_no_savings: "إعادة التمويل غير مجدية",
+    re_after_ira: (v: string) => `بعد سداد الغرامة (${v})`,
+    re_not_worth: "المعدل الجديد أعلى أو مساوٍ للمعدل الحالي",
+    re_breakeven: "نقطة التعادل",
+    re_months: (n: number) => `${n} أشهر`,
+    re_current_monthly: "القسط الحالي",
+    re_new_monthly: "القسط الجديد",
+    re_monthly_savings: "الوفر الشهري",
+    re_ira_row: "الغرامة التقديرية",
+    re_ira_sub: "3% رأس مال أو 6 أشهر فوائد",
+    re_check: "تحقق مع بنكك إذا كانت الغرامة مدرجة في القرض الجديد أم تُدفع نقداً.",
+    reset: "إعادة تعيين",
+  },
+};
 type Tab = "simulator" | "amortization" | "comparison" | "capacite" | "rachat";
 
 const CURRENCIES: { value: Currency; flag: string; symbol: string }[] = [
@@ -120,12 +302,14 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
     [result.schedule, currency]
   );
 
+  const T = I18N[lang] ?? I18N.fr;
+
   const tabs: { id: Tab; label: string }[] = [
     { id: "simulator",    label: dict.tabs.simulator },
     { id: "amortization", label: dict.tabs.amortization },
     { id: "comparison",   label: dict.tabs.comparison },
-    { id: "capacite",     label: "Capacité d'emprunt" },
-    { id: "rachat",       label: "Rachat de crédit" },
+    { id: "capacite",     label: T.tab_borrowing },
+    { id: "rachat",       label: T.tab_refinancing },
   ];
 
   /* ── Borrowing-capacity state ───────────────────────────────────────── */
@@ -244,7 +428,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
               <button
                 onClick={() => { setPrincipal(DEFAULTS.principal); setAnnualRate(DEFAULTS.annualRate); setTermYears(DEFAULTS.termYears); setInsuranceRate(DEFAULTS.insuranceRate); }}
                 className="w-8 h-8 rounded-xl hover:bg-slate-100 flex items-center justify-center transition-colors text-slate-400 hover:text-slate-600"
-                title="Réinitialiser"
+                title={T.reset}
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -311,7 +495,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   value={annualRate} min={0.03} max={0.08} step={0.0005}
                   onChange={setAnnualRate}
                   display={`${(annualRate * 100).toFixed(2)}%`}
-                  hint="annuel"
+                  hint={T.annual}
                 />
                 <Slider
                   label={dict.insurance_label}
@@ -329,7 +513,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   >
                     <span className="flex items-center gap-2 text-sm font-medium text-slate-600">
                       <Info className="w-4 h-4 text-slate-400" />
-                      Comment est calculée cette simulation ?
+                      {T.how_calc}
                     </span>
                     <ChevronRight className={cn("w-4 h-4 text-slate-400 transition-transform", showFormula && "rotate-90")} />
                   </button>
@@ -341,12 +525,12 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                       >
                         <div className="px-4 pb-4 text-xs text-slate-500 space-y-2 border-t border-slate-100 pt-3">
                           <p>
-                            <strong className="text-slate-700">Formule :</strong>{" "}
+                            <strong className="text-slate-700">{T.formula} :</strong>{" "}
                             <code className="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-xs">
                               M = P × r(1+r)ⁿ / [(1+r)ⁿ − 1]
                             </code>
                           </p>
-                          <p>P = capital · r = taux mensuel · n = mensualités. Assurance sur capital initial (BAM).</p>
+                          <p>{T.formula_desc}</p>
                         </div>
                       </motion.div>
                     )}
@@ -376,13 +560,13 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   {/* Minimum income required for 33% DTI */}
                   <div className="mt-4 pt-3 border-t border-white/15">
                     <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="text-blue-200">Revenu min. requis</span>
+                      <span className="text-blue-200">{T.min_income}</span>
                       <span className="text-white font-bold">
                         {fmt(result.totalMonthly / 0.33)}
-                        <span className="text-blue-300 font-normal ms-1">/mois</span>
+                        <span className="text-blue-300 font-normal ms-1">{T.per_month}</span>
                       </span>
                     </div>
-                    <p className="text-[10px] text-blue-300/70">Pour un taux d&apos;effort de 33% (norme BAM)</p>
+                    <p className="text-[10px] text-blue-300/70">{T.dti_note}</p>
                   </div>
                 </motion.div>
 
@@ -402,15 +586,15 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                       : "bg-amber-50 text-amber-700 border border-amber-100"
                   )}>
                     {savingsVsAverage < 0
-                      ? `✓ ${fmt(Math.abs(savingsVsAverage))}/mois économisés vs. taux moyen`
-                      : `↑ ${fmt(Math.abs(savingsVsAverage))}/mois au-dessus du taux moyen`}
+                      ? `✓ ${fmt(Math.abs(savingsVsAverage))}${T.per_month} ${T.saved_vs_avg}`
+                      : `↑ ${fmt(Math.abs(savingsVsAverage))}${T.per_month} ${T.above_avg}`}
                   </div>
                 )}
 
                 {/* Best bank CTA */}
                 <div className="card p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Meilleure offre</p>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{T.best_offer}</p>
                     <span className="badge-green">
                       <TrendingDown className="w-3 h-3" />
                       {(bestBank.fixedRate * 100).toFixed(2)}%
@@ -423,7 +607,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                       </div>
                       <div>
                         <p className="font-semibold text-slate-900 text-sm">{bestBank.name}</p>
-                        <p className="text-xs text-slate-400">Taux le plus bas</p>
+                        <p className="text-xs text-slate-400">{T.lowest_rate}</p>
                       </div>
                     </div>
                     <a
@@ -461,7 +645,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold
                              bg-slate-100 text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
                 >
-                  <Download className="w-3.5 h-3.5" /> Exporter CSV
+                  <Download className="w-3.5 h-3.5" /> {T.export_csv}
                 </button>
               </div>
               <div className="h-64">
@@ -484,8 +668,8 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                       contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: "12px" }}
                       formatter={(v: number) => [fmt(v / (CURRENCY_RATES[currency] ?? 1)), ""]}
                     />
-                    <Area type="monotone" dataKey="balance"  name="Capital restant" stroke="#1E3A6E" strokeWidth={2} fill="url(#gBalance)" />
-                    <Area type="monotone" dataKey="interest" name="Intérêts annuels" stroke="#F59E0B" strokeWidth={2} fill="url(#gInterest)" />
+                    <Area type="monotone" dataKey="balance"  name={T.chart_balance}  stroke="#1E3A6E" strokeWidth={2} fill="url(#gBalance)" />
+                    <Area type="monotone" dataKey="interest" name={T.chart_interest} stroke="#F59E0B" strokeWidth={2} fill="url(#gInterest)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -493,7 +677,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                 <table className="w-full text-sm">
                   <thead className="bg-slate-50">
                     <tr>
-                      {["Année","Mensualité","Capital","Intérêts","Restant dû"].map((h) => (
+                      {[T.tbl_year, T.tbl_payment, T.tbl_principal, T.tbl_interest, T.tbl_balance].map((h) => (
                         <th key={h} className="py-3 px-4 text-start text-[11px] font-bold text-slate-400 uppercase tracking-wider">{h}</th>
                       ))}
                     </tr>
@@ -528,7 +712,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
               className="p-6"
             >
               <p className="text-xs text-slate-400 mb-4">
-                Simulation pour <strong className="text-slate-700">{fmt(principal)}</strong> sur <strong className="text-slate-700">{termYears} ans</strong>
+                {T.sim_for} <strong className="text-slate-700">{fmt(principal)}</strong> {T.over} <strong className="text-slate-700">{termYears} {T.years_lbl}</strong>
               </p>
               <div className="space-y-2">
                 {BANK_RATES.map((bank, i) => {
@@ -550,7 +734,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-xs font-semibold text-slate-700 truncate">{bank.shortName}</span>
                           <span className={cn("text-xs font-bold tabular-nums", isBest ? "text-brand-600" : "text-slate-600")}>
-                            {fmt(sim.totalMonthly)}<span className="text-slate-400 font-normal">/mois</span>
+                            {fmt(sim.totalMonthly)}<span className="text-slate-400 font-normal">{T.per_month}</span>
                           </span>
                         </div>
                         <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -593,16 +777,16 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
             >
               {/* Inputs */}
               <div className="lg:col-span-3 space-y-6">
-                <Slider label="Revenu mensuel net" value={bcSalary} min={3_000} max={100_000} step={500}
-                  onChange={setBcSalary} display={fmt(bcSalary)} hint="/mois" />
-                <Slider label="Autres revenus (loyers, dividendes…)" value={bcOther} min={0} max={50_000} step={500}
-                  onChange={setBcOther} display={fmt(bcOther)} hint="/mois" />
-                <Slider label="Charges de crédit existantes" value={bcDebts} min={0} max={20_000} step={500}
-                  onChange={setBcDebts} display={fmt(bcDebts)} hint="/mois" />
-                <Slider label="Durée souhaitée" value={bcTerm} min={5} max={30} step={1}
-                  onChange={setBcTerm} display={`${bcTerm}`} hint="ans" />
-                <Slider label="Taux annuel" value={bcRate} min={0.03} max={0.08} step={0.0005}
-                  onChange={setBcRate} display={`${(bcRate * 100).toFixed(2)}%`} hint="fixe" />
+                <Slider label={T.bc_salary} value={bcSalary} min={3_000} max={100_000} step={500}
+                  onChange={setBcSalary} display={fmt(bcSalary)} hint={T.per_month} />
+                <Slider label={T.bc_other} value={bcOther} min={0} max={50_000} step={500}
+                  onChange={setBcOther} display={fmt(bcOther)} hint={T.per_month} />
+                <Slider label={T.bc_debts} value={bcDebts} min={0} max={20_000} step={500}
+                  onChange={setBcDebts} display={fmt(bcDebts)} hint={T.per_month} />
+                <Slider label={T.bc_term} value={bcTerm} min={5} max={30} step={1}
+                  onChange={setBcTerm} display={`${bcTerm}`} hint={T.years} />
+                <Slider label={T.bc_rate} value={bcRate} min={0.03} max={0.08} step={0.0005}
+                  onChange={setBcRate} display={`${(bcRate * 100).toFixed(2)}%`} hint={T.fixed} />
               </div>
 
               {/* Results */}
@@ -616,38 +800,38 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   style={{ background: "linear-gradient(135deg,#059669 0%,#065f46 100%)" }}
                 >
                   <p className="text-emerald-200 text-xs font-bold uppercase tracking-wider mb-2">
-                    Capacité d'emprunt maximale
+                    {T.bc_title}
                   </p>
                   <p className="text-4xl font-bold tracking-tight mb-0.5">
                     {fmt(bcMaxCapital)}
                   </p>
-                  <p className="text-emerald-300 text-xs">capital empruntable (assurance incluse)</p>
+                  <p className="text-emerald-300 text-xs">{T.bc_sub}</p>
                   <div className="mt-4 pt-3 border-t border-white/15">
                     <div className="flex justify-between text-xs">
-                      <span className="text-emerald-200">Mensualité max (33% DTI)</span>
-                      <span className="text-white font-bold">{fmt(bcMaxMonthly)}/mois</span>
+                      <span className="text-emerald-200">{T.bc_max_monthly}</span>
+                      <span className="text-white font-bold">{fmt(bcMaxMonthly)}{T.per_month}</span>
                     </div>
                     <div className="mt-1.5 h-1.5 bg-white/20 rounded-full overflow-hidden">
                       <div className="h-full bg-white/70 rounded-full" style={{ width: "33%" }} />
                     </div>
-                    <p className="text-[10px] text-emerald-300/70 mt-1.5">Taux d'effort ≤ 33% (norme BAM)</p>
+                    <p className="text-[10px] text-emerald-300/70 mt-1.5">{T.bc_dti}</p>
                   </div>
                 </motion.div>
 
                 <div className="card p-4 space-y-0">
-                  <ResultRow label="Revenu total pris en compte" value={fmt(bcSalary + bcOther)} />
-                  <ResultRow label="Charges déduites" value={fmt(bcDebts)} />
-                  <ResultRow label="Mensualité disponible" value={fmt(bcMaxMonthly)} />
+                  <ResultRow label={T.bc_total_income} value={fmt(bcSalary + bcOther)} />
+                  <ResultRow label={T.bc_deductions} value={fmt(bcDebts)} />
+                  <ResultRow label={T.bc_available} value={fmt(bcMaxMonthly)} />
                   <ResultRow
-                    label="Capital (taux sélectionné)"
+                    label={T.bc_capital}
                     value={fmt(bcMaxCapital)}
-                    sub={`sur ${bcTerm} ans à ${(bcRate * 100).toFixed(2)}%`}
+                    sub={T.bc_over_at(bcTerm, parseFloat((bcRate * 100).toFixed(2)))}
                   />
                 </div>
 
                 {bcMaxCapital > 0 && (
                   <div className="rounded-xl bg-brand-50 border border-brand-100 px-4 py-3 text-xs text-brand-700">
-                    Avec la meilleure banque actuelle (CIH 4.45%) sur {bcTerm} ans :{" "}
+                    {T.bc_best_bank(bcTerm)}{" "}
                     <strong>{fmt(Math.round(bcMaxMonthly / ((0.0445/12 * Math.pow(1+0.0445/12, bcTerm*12)) / (Math.pow(1+0.0445/12, bcTerm*12)-1) + 0.0043/12)))}</strong>
                   </div>
                 )}
@@ -667,20 +851,20 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
             >
               {/* Inputs */}
               <div className="lg:col-span-3 space-y-6">
-                <Slider label="Capital restant dû" value={reCapital} min={100_000} max={5_000_000} step={50_000}
+                <Slider label={T.re_capital} value={reCapital} min={100_000} max={5_000_000} step={50_000}
                   onChange={setReCapital} display={fmt(reCapital)} />
-                <Slider label="Taux actuel" value={reCurrentRate} min={0.04} max={0.10} step={0.0005}
-                  onChange={setReCurrentRate} display={`${(reCurrentRate * 100).toFixed(2)}%`} hint="annuel" />
-                <Slider label="Nouveau taux proposé" value={reNewRate} min={0.03} max={0.09} step={0.0005}
-                  onChange={setReNewRate} display={`${(reNewRate * 100).toFixed(2)}%`} hint="annuel" />
-                <Slider label="Durée restante" value={reRemaining} min={2} max={30} step={1}
-                  onChange={setReRemaining} display={`${reRemaining}`} hint="ans" />
+                <Slider label={T.re_current_rate} value={reCurrentRate} min={0.04} max={0.10} step={0.0005}
+                  onChange={setReCurrentRate} display={`${(reCurrentRate * 100).toFixed(2)}%`} hint={T.annual} />
+                <Slider label={T.re_new_rate} value={reNewRate} min={0.03} max={0.09} step={0.0005}
+                  onChange={setReNewRate} display={`${(reNewRate * 100).toFixed(2)}%`} hint={T.annual} />
+                <Slider label={T.re_remaining} value={reRemaining} min={2} max={30} step={1}
+                  onChange={setReRemaining} display={`${reRemaining}`} hint={T.years} />
 
                 <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4 text-xs text-slate-500 space-y-1">
-                  <p><strong className="text-slate-700">IRA (Indemnité de remboursement anticipé)</strong></p>
+                  <p><strong className="text-slate-700">{T.ira_title}</strong></p>
                   <p>
-                    Plafonnée par BAM au minimum de : 3% du capital restant dû ou 6 mois d'intérêts.
-                    Votre IRA estimée : <strong className="text-slate-700">{fmt(refi.ira)}</strong>
+                    {T.ira_desc}{" "}
+                    {T.ira_your} <strong className="text-slate-700">{fmt(refi.ira)}</strong>
                   </p>
                 </div>
               </div>
@@ -701,22 +885,22 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   }}
                 >
                   <p className="text-purple-200 text-xs font-bold uppercase tracking-wider mb-2">
-                    {refi.monthlySavings > 0 ? "Économie totale estimée" : "Rachat non rentable"}
+                    {refi.monthlySavings > 0 ? T.re_savings_title : T.re_no_savings}
                   </p>
                   <p className="text-4xl font-bold tracking-tight mb-0.5">
                     {refi.monthlySavings > 0 ? fmt(refi.totalSavings) : "—"}
                   </p>
                   <p className="text-purple-300 text-xs">
                     {refi.monthlySavings > 0
-                      ? `après remboursement de l'IRA (${fmt(refi.ira)})`
-                      : "Le nouveau taux est supérieur ou égal à l'actuel"}
+                      ? T.re_after_ira(fmt(refi.ira))
+                      : T.re_not_worth}
                   </p>
                   {refi.monthlySavings > 0 && (
                     <div className="mt-4 pt-3 border-t border-white/15">
                       <div className="flex justify-between text-xs">
-                        <span className="text-purple-200">Point mort</span>
+                        <span className="text-purple-200">{T.re_breakeven}</span>
                         <span className="text-white font-bold">
-                          {refi.breakEvenMonths === Infinity ? "—" : `${refi.breakEvenMonths} mois`}
+                          {refi.breakEvenMonths === Infinity ? "—" : T.re_months(refi.breakEvenMonths)}
                         </span>
                       </div>
                     </div>
@@ -724,18 +908,18 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                 </motion.div>
 
                 <div className="card p-4">
-                  <ResultRow label="Mensualité actuelle"     value={fmt(refi.currentMonthly)} />
-                  <ResultRow label="Nouvelle mensualité"     value={fmt(refi.newMonthly)} />
+                  <ResultRow label={T.re_current_monthly}   value={fmt(refi.currentMonthly)} />
+                  <ResultRow label={T.re_new_monthly}       value={fmt(refi.newMonthly)} />
                   <ResultRow
-                    label="Économie mensuelle"
+                    label={T.re_monthly_savings}
                     value={refi.monthlySavings > 0 ? fmt(refi.monthlySavings) : "—"}
-                    sub={refi.monthlySavings > 0 ? `×${reRemaining * 12} mois` : undefined}
+                    sub={refi.monthlySavings > 0 ? `×${reRemaining * 12} ${T.months}` : undefined}
                   />
-                  <ResultRow label="IRA estimée" value={fmt(refi.ira)} sub="3% capital ou 6 mois intérêts" />
+                  <ResultRow label={T.re_ira_row} value={fmt(refi.ira)} sub={T.re_ira_sub} />
                 </div>
 
                 <div className="rounded-xl bg-purple-50 border border-purple-100 px-4 py-3 text-xs text-purple-700">
-                  Vérifiez avec votre banque si l'IRA est incluse dans le nouveau prêt ou à régler au comptant.
+                  {T.re_check}
                 </div>
               </div>
             </motion.div>
