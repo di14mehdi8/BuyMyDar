@@ -73,10 +73,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: descriptions[lang],
       images: [
         {
-          url: "/og-image.png",
+          url: "/og-image.jpg",
           width: 1200,
           height: 630,
-          type: "image/png",
+          type: "image/jpeg",
           alt: "BuyMyDar — Morocco Mortgage Comparison",
         },
       ],
@@ -85,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["/og-image.png"],
+      images: ["/og-image.jpg"],
     },
     icons: {
       icon:             "/favicon.ico",
