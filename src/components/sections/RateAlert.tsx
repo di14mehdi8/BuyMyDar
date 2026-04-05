@@ -83,8 +83,9 @@ export function RateAlert() {
                     <span className="text-white font-bold">{threshold.toFixed(2)}%</span>
                   </div>
                   <div className="relative">
+                    <div className="absolute top-[8px] left-0 right-0 h-1 rounded-full bg-white/20 pointer-events-none" />
                     <div
-                      className="absolute top-[8px] left-0 h-1 rounded-full bg-white/40 pointer-events-none"
+                      className="absolute top-[8px] left-0 h-1 rounded-full bg-white/60 pointer-events-none transition-all"
                       style={{ width: `${((threshold - 3.5) / (5.5 - 3.5)) * 100}%` }}
                     />
                     <input

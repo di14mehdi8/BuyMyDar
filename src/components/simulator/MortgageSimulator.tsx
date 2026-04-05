@@ -54,7 +54,9 @@ function Slider({
         </div>
       </div>
       <div className="relative">
-        {/* Track fill — top-[8px] centers a 4px bar in the 20px-tall input */}
+        {/* Full grey track */}
+        <div className="absolute top-[8px] left-0 right-0 h-1 rounded-full bg-slate-200 pointer-events-none" />
+        {/* Brand fill — covers left portion up to thumb */}
         <div className="absolute top-[8px] left-0 h-1 rounded-full bg-brand-600 pointer-events-none transition-all"
              style={{ width: `${pct}%` }} />
         <input

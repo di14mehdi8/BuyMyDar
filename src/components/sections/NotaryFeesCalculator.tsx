@@ -94,6 +94,7 @@ export function NotaryFeesCalculator() {
                 <span className="text-sm font-bold text-amber-600">{fmt(price)}</span>
               </div>
               <div className="relative">
+                <div className="absolute top-[8px] left-0 right-0 h-1 rounded-full bg-slate-200 pointer-events-none" />
                 <div
                   className="absolute top-[8px] left-0 h-1 rounded-full bg-amber-500 pointer-events-none transition-all"
                   style={{ width: `${((price - 200_000) / (10_000_000 - 200_000)) * 100}%` }}
@@ -122,6 +123,7 @@ export function NotaryFeesCalculator() {
                 <span className="text-sm font-bold text-amber-600">{fmt(loan)}</span>
               </div>
               <div className="relative">
+                <div className="absolute top-[8px] left-0 right-0 h-1 rounded-full bg-slate-200 pointer-events-none" />
                 <div
                   className="absolute top-[8px] left-0 h-1 rounded-full bg-amber-500 pointer-events-none transition-all"
                   style={{ width: `${(loan / price) * 100}%` }}

@@ -118,7 +118,7 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: 99px;
-  background: #e2e8f0;
+  background: transparent; /* track drawn by the div behind the input */
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -140,7 +140,7 @@ input[type="range"]:active::-webkit-slider-thumb {
 input[type="range"]::-moz-range-track {
   height: 4px;
   border-radius: 99px;
-  background: #e2e8f0;
+  background: #e2e8f0; /* Firefox doesn't use the div so keep the grey */
 }
 input[type="range"]::-moz-range-thumb {
   width: 20px; height: 20px;
