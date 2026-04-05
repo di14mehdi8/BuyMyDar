@@ -135,6 +135,8 @@ export default async function LangLayout({ children, params }: Props) {
                 ad_storage: 'denied',
                 wait_for_update: 500
               });
+              gtag('set', 'url_passthrough', true);
+              gtag('set', 'ads_data_redaction', true);
             `,
           }}
         />
