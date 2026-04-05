@@ -36,10 +36,13 @@ export function Footer({ lang, dict }: FooterProps) {
     },
     {
       title: "BuyMyDar",
-      links: Object.entries(dict.links).map(([, label]) => ({
-        label,
-        href: `/${lang}/about`,
-      })),
+      links: [
+        ...Object.entries(dict.links).map(([, label]) => ({
+          label,
+          href: `/${lang}/about`,
+        })),
+        { label: lang === "ar" ? "تواصل معنا" : lang === "en" ? "Contact" : "Nous contacter", href: `/${lang}/contact` },
+      ],
     },
   ];
 
