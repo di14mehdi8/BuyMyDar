@@ -2,11 +2,11 @@
   "nav": {
     "simulator": "Simulator",
     "banks": "Banks",
-    "insights": "Insights",
-    "mre": "Guides",
-    "guide": "Guide",
+    "mre": "MRE Guide",
+    "guide": "Buying Guide",
     "mourabaha": "Mourabaha",
     "login": "Sign In",
+    "contact": "Contact us",
     "cta": "Estimate my loan"
   },
   "hero": {
@@ -114,12 +114,11 @@
     "disclaimer": "Indicative simulation. Not licensed financial advice.",
     "cols": {
       "simulator": "Simulator",
-      "banks": "Banks",
       "links": {
         "simulator": "Mortgage simulator",
-        "compare": "Compare banks",
         "guide": "Buying guide",
-        "insights": "Insights & news"
+        "mre": "MRE Guide",
+        "mourabaha": "Mourabaha Financing"
       }
     },
     "links": {

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { locales, type Locale } from "@/lib/i18n/config";
+import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Home } from "lucide-react";
@@ -13,6 +13,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
+  const hreflangAlternates: Record<string, string> = {};
+  for (const [locale, tags] of Object.entries(hreflangMap)) {
+    for (const tag of tags) {
+      hreflangAlternates[tag] = `https://buymydar.com/${locale}/contact`;
+    }
+  }
+  hreflangAlternates["x-default"] = "https://buymydar.com/fr/contact";
   return {
     title:
       lang === "ar"
@@ -26,6 +33,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : lang === "en"
         ? "Tell us about your Moroccan property project. We'll get back to you within 24h."
         : "Parlez-nous de votre projet immobilier au Maroc. On vous répond sous 24h.",
+    alternates: {
+      canonical: `https://buymydar.com/${lang}/contact`,
+      languages: hreflangAlternates,
+    },
   };
 }
 

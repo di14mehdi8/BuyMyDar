@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { locales, type Locale } from "@/lib/i18n/config";
+import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Home, CheckCircle2, Info, ExternalLink } from "lucide-react";
@@ -12,12 +12,23 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
+  const hreflangAlternates: Record<string, string> = {};
+  for (const [locale, tags] of Object.entries(hreflangMap)) {
+    for (const tag of tags) {
+      hreflangAlternates[tag] = `https://buymydar.com/${locale}/mourabaha`;
+    }
+  }
+  hreflangAlternates["x-default"] = "https://buymydar.com/fr/mourabaha";
   return {
     title: lang === "fr"
       ? "Financement Mourabaha au Maroc — Crédit immobilier islamique — BuyMyDar"
       : "Mourabaha Financing in Morocco — Islamic Home Finance — BuyMyDar",
     description:
       "Comprendre le financement Mourabaha au Maroc : principe, calcul, banques éligibles (Dar Assafaa, CIH, BMCI) et comparaison avec le crédit classique.",
+    alternates: {
+      canonical: `https://buymydar.com/${lang}/mourabaha`,
+      languages: hreflangAlternates,
+    },
   };
 }
 

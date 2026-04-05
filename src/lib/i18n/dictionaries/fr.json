@@ -2,11 +2,11 @@
   "nav": {
     "simulator": "Simulateur",
     "banks": "Banques",
-    "insights": "Conseils",
-    "mre": "Guides",
-    "guide": "Guide",
+    "mre": "Guide MRE",
+    "guide": "Guide d'achat",
     "mourabaha": "Mourabaha",
     "login": "Connexion",
+    "contact": "Nous contacter",
     "cta": "Estimer mon prêt"
   },
   "hero": {
@@ -114,12 +114,11 @@
     "disclaimer": "Simulation indicative. Pas un conseil financier agréé.",
     "cols": {
       "simulator": "Simulateur",
-      "banks": "Banques",
       "links": {
         "simulator": "Simulateur crédit",
-        "compare": "Comparer les banques",
         "guide": "Guide d'achat",
-        "insights": "Conseils & actualités"
+        "mre": "Guide MRE",
+        "mourabaha": "Financement Mourabaha"
       }
     },
     "links": {

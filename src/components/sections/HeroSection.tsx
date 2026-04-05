@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Building2, Globe2, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Building2, Globe2, Sparkles, MessageCircle } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/getDictionary";
 import { MARKET_AVERAGE_RATE, BANK_RATES } from "@/lib/mortgage/calculator";
 
@@ -20,14 +20,58 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
 };
 
+const HERO_I18N: Record<string, {
+  best_rate: string; simulate: string; avg_rate: string; morocco: string;
+  max_term: string; residents: string; banks: string; compared: string;
+  mre_eligible: string; scroll: string;
+}> = {
+  fr: {
+    best_rate: "🏆 Meilleur taux fixe du marché",
+    simulate: "Simuler",
+    avg_rate: "Taux moyen",
+    morocco: "Maroc 2026",
+    max_term: "Durée max",
+    residents: "Pour résidents",
+    banks: "Banques",
+    compared: "Comparées en direct",
+    mre_eligible: "Banques éligibles MRE",
+    scroll: "Défiler pour simuler",
+  },
+  en: {
+    best_rate: "🏆 Best fixed rate on the market",
+    simulate: "Simulate",
+    avg_rate: "Avg rate",
+    morocco: "Morocco 2026",
+    max_term: "Max term",
+    residents: "For residents",
+    banks: "Banks",
+    compared: "Compared live",
+    mre_eligible: "MRE-eligible banks",
+    scroll: "Scroll to simulate",
+  },
+  ar: {
+    best_rate: "🏆 أفضل سعر ثابت في السوق",
+    simulate: "محاكاة",
+    avg_rate: "متوسط السعر",
+    morocco: "المغرب ٢٠٢٦",
+    max_term: "أقصى مدة",
+    residents: "للمقيمين",
+    banks: "البنوك",
+    compared: "مقارنة مباشرة",
+    mre_eligible: "بنوك مؤهلة للمغاربة بالخارج",
+    scroll: "تمرير للمحاكاة",
+  },
+};
+
 export function HeroSection({ lang, dict }: HeroSectionProps) {
+  const T = HERO_I18N[lang] ?? HERO_I18N.fr;
   const lowestRate = Math.min(...BANK_RATES.map((b) => b.fixedRate));
   const lowestBank = BANK_RATES.find((b) => b.fixedRate === lowestRate)!;
 
   return (
     <section
       className="relative flex flex-col justify-center overflow-hidden min-h-[95vh]"
-      style={{ paddingTop: "calc(var(--header-height) + var(--ticker-height))" }}
+      style={{ paddingTop: "2rem" }}
       aria-labelledby="hero-heading"
     >
       {/* Background */}
@@ -82,6 +126,15 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
               <Link href={`/${lang}#banks`} className="btn-secondary px-7 py-3.5 text-base">
                 {dict.cta_secondary}
               </Link>
+              <Link
+                href={`/${lang}/contact`}
+                className="flex items-center gap-2 px-7 py-3.5 text-base font-semibold rounded-2xl
+                           border border-slate-200 text-slate-600 bg-white hover:border-brand-300
+                           hover:text-brand-600 transition-all"
+              >
+                <MessageCircle className="w-4 h-4" />
+                {lang === "ar" ? "اتصل بنا" : lang === "en" ? "Contact us" : "Nous contacter"}
+              </Link>
             </motion.div>
 
             {/* Trust signals */}
@@ -115,7 +168,7 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
               style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}
             >
               <p className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">
-                🏆 Meilleur taux fixe du marché
+                {T.best_rate}
               </p>
               <div className="flex items-end justify-between">
                 <div>
@@ -129,32 +182,32 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
                   className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/15
                              hover:bg-white/25 text-white text-sm font-semibold transition-all"
                 >
-                  Simuler <ArrowRight className="w-3.5 h-3.5" />
+                  {T.simulate} <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </motion.div>
 
-            {/* Taux moyen */}
+            {/* Avg rate */}
             <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Taux moyen</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{T.avg_rate}</p>
               <p className="text-2xl font-bold text-slate-900">
                 {(MARKET_AVERAGE_RATE * 100).toFixed(2)}%
               </p>
-              <p className="text-xs text-slate-400 mt-1">Maroc 2026</p>
+              <p className="text-xs text-slate-400 mt-1">{T.morocco}</p>
             </motion.div>
 
-            {/* Durée max */}
+            {/* Max term */}
             <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Durée max</p>
-              <p className="text-2xl font-bold text-slate-900">25 ans</p>
-              <p className="text-xs text-slate-400 mt-1">Pour résidents</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{T.max_term}</p>
+              <p className="text-2xl font-bold text-slate-900">25 {lang === "ar" ? "سنة" : lang === "en" ? "yrs" : "ans"}</p>
+              <p className="text-xs text-slate-400 mt-1">{T.residents}</p>
             </motion.div>
 
-            {/* Banques */}
+            {/* Banks */}
             <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Banques</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{T.banks}</p>
               <p className="text-2xl font-bold text-slate-900">8</p>
-              <p className="text-xs text-slate-400 mt-1">Comparées en direct</p>
+              <p className="text-xs text-slate-400 mt-1">{T.compared}</p>
             </motion.div>
 
             {/* MRE eligible */}
@@ -163,7 +216,7 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
               <p className="text-2xl font-bold text-emerald-600">
                 {BANK_RATES.filter((b) => b.mreEligible).length}
               </p>
-              <p className="text-xs text-slate-400 mt-1">Banques éligibles</p>
+              <p className="text-xs text-slate-400 mt-1">{T.mre_eligible}</p>
             </motion.div>
           </motion.div>
         </div>
@@ -171,7 +224,7 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
 
       {/* Bottom scroll cue */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2">
-        <p className="text-xs text-slate-400 font-medium">Défiler pour simuler</p>
+        <p className="text-xs text-slate-400 font-medium">{T.scroll}</p>
         <motion.div
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}

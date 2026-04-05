@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Twitter, Linkedin, Facebook, Instagram, ArrowUpRight } from "lucide-react";
+import { Linkedin, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 
 interface FooterProps {
@@ -10,12 +10,11 @@ interface FooterProps {
     disclaimer: string;
     cols: {
       simulator: string;
-      banks: string;
       links: {
         simulator: string;
-        compare: string;
         guide: string;
-        insights: string;
+        mre: string;
+        mourabaha: string;
       };
     };
     links: Record<string, string>;
@@ -31,25 +30,21 @@ export function Footer({ lang, dict }: FooterProps) {
       title: dict.cols.simulator,
       links: [
         { label: dict.cols.links.simulator, href: `/${lang}#simulator` },
-        { label: dict.cols.links.compare,   href: `/${lang}#banks` },
         { label: dict.cols.links.guide,     href: `/${lang}/guide` },
-        { label: dict.cols.links.insights,  href: `/${lang}#insights` },
-      ],
-    },
-    {
-      title: dict.cols.banks,
-      links: [
-        { label: "Attijariwafa Bank",    href: "https://www.attijariwafabank.com" },
-        { label: "BCP (Banque Populaire)", href: "https://www.gbp.ma" },
-        { label: "CIH Bank",             href: "https://www.cihbank.ma" },
-        { label: "CFG Bank",             href: "https://www.cfgbank.com" },
+        { label: dict.cols.links.mre,       href: `/${lang}/mre` },
+        { label: dict.cols.links.mourabaha, href: `/${lang}/mourabaha` },
       ],
     },
     {
       title: "BuyMyDar",
-      links: Object.entries(dict.links).map(([, label]) => ({
+      links: Object.entries(dict.links).map(([key, label]) => ({
         label,
-        href: `/${lang}/about`,
+        href:
+          key === "contact"  ? `/${lang}/contact`  :
+          key === "legal"    ? `/${lang}/legal`     :
+          key === "privacy"  ? `/${lang}/privacy`   :
+          key === "sitemap"  ? `/${lang}/sitemap`   :
+          `/${lang}/about`,
       })),
     },
   ];
@@ -64,7 +59,7 @@ export function Footer({ lang, dict }: FooterProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand column */}
           <div className="md:col-span-2 space-y-5">
             <Link href={`/${lang}`} className="flex items-center gap-2.5 group w-fit">
@@ -84,15 +79,16 @@ export function Footer({ lang, dict }: FooterProps) {
             </p>
             <div className="flex items-center gap-2">
               {[
-                { Icon: Twitter,   href: "#", label: "Twitter" },
-                { Icon: Linkedin,  href: "#", label: "LinkedIn" },
-                { Icon: Facebook,  href: "#", label: "Facebook" },
-                { Icon: Instagram, href: "#", label: "Instagram" },
+                { Icon: Instagram, href: "https://www.instagram.com/buymydar", label: "Instagram" },
+                { Icon: Linkedin,  href: "https://www.linkedin.com/company/buymydar", label: "LinkedIn" },
+                { Icon: Facebook,  href: "https://www.facebook.com/buymydar", label: "Facebook" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-brand-600 flex items-center justify-center transition-colors"
                 >
                   <Icon className="w-4 h-4" />

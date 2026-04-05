@@ -26,9 +26,8 @@ export function RateTicker({ lang, dict }: RateTickerProps) {
 
   return (
     <div
-      className="fixed inset-x-0 z-40 flex items-center overflow-hidden"
+      className="w-full flex items-center overflow-hidden"
       style={{
-        top: "var(--header-height)",
         height: "var(--ticker-height)",
         background: "linear-gradient(90deg,#09152A 0%,#1E3A6E 40%,#3358CB 100%)",
       }}

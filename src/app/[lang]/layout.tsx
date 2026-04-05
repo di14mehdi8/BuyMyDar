@@ -51,6 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       alternates[tag] = `https://buymydar.com/${locale}`;
     }
   }
+  alternates["x-default"] = "https://buymydar.com/fr";
 
   return {
     title: {
@@ -60,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: descriptions[lang],
     metadataBase: new URL("https://buymydar.com"),
     alternates: {
-      canonical: `/${lang}`,
+      canonical: `https://buymydar.com/${lang}`,
       languages: alternates,
     },
     openGraph: {
@@ -157,8 +158,8 @@ export default async function LangLayout({ children, params }: Props) {
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <Navbar lang={lang} dict={dict.nav} />
         <RateTicker lang={lang} dict={dict.ticker} />
+        <Navbar lang={lang} dict={dict.nav} />
         <main id="main-content">{children}</main>
         <Footer lang={lang} dict={dict.footer} />
         <CookieConsent />

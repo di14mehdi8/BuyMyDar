@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BarChart2, Newspaper, Globe } from "lucide-react";
+import { BarChart2, Newspaper, Globe, MessageCircle, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { MortgageSimulator }    from "@/components/simulator/MortgageSimulator";
 import { BankDirectory }        from "@/components/sections/BankDirectory";
 import { FAQSection }           from "@/components/sections/FAQSection";
@@ -12,7 +13,6 @@ import { RateAlert }            from "@/components/sections/RateAlert";
 import { MRESection }           from "@/components/sections/MRESection";
 import { DocumentsSection }     from "@/components/sections/DocumentsSection";
 import { NotaryFeesCalculator } from "@/components/sections/NotaryFeesCalculator";
-import { AdSlot }               from "@/components/ads/AdSlot";
 import { cn }                   from "@/lib/utils";
 import type { Dictionary }      from "@/lib/i18n/getDictionary";
 
@@ -35,7 +35,7 @@ export function HomeTabs({ lang, dict }: HomeTabsProps) {
   return (
     <>
       {/* ── Sticky tab bar ────────────────────────────────────── */}
-      <div className="sticky top-[var(--header-height)] z-40 bg-white/85 backdrop-blur-md border-b border-slate-100 shadow-sm">
+      <div className="sticky top-[var(--header-height)] z-30 bg-white/85 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex">
             {(["compare", "actualites", "mre"] as TabId[]).map((tabId) => {
@@ -81,11 +81,33 @@ export function HomeTabs({ lang, dict }: HomeTabsProps) {
           {active === "compare" && (
             <>
               <MortgageSimulator lang={lang} dict={dict.simulator} />
-              <div className="flex justify-center">
-                <AdSlot slotId="0987654321" format="rectangle" label={dict.ads.label} />
-              </div>
               <BankDirectory lang={lang} dict={dict.banks} />
               <FAQSection dict={dict.faq} />
+              {/* Contact CTA strip */}
+              <div className="rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6"
+                   style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}>
+                <div>
+                  <p className="text-white font-bold text-xl mb-1">
+                    {lang === "ar" ? "هل لديك سؤال؟" : lang === "en" ? "Have a question?" : "Vous avez une question ?"}
+                  </p>
+                  <p className="text-blue-200 text-sm">
+                    {lang === "ar"
+                      ? "فريقنا مستعد للإجابة على استفساراتك."
+                      : lang === "en"
+                      ? "Our team is ready to answer your questions."
+                      : "Notre équipe est disponible pour répondre à vos questions."}
+                  </p>
+                </div>
+                <Link
+                  href={`/${lang}/contact`}
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-white text-slate-900
+                             font-semibold text-sm hover:bg-blue-50 transition-colors shrink-0"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  {lang === "ar" ? "اتصل بنا" : lang === "en" ? "Contact us" : "Nous contacter"}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </>
           )}
 

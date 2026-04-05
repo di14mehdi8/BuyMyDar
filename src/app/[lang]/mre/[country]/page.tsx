@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { locales, type Locale } from "@/lib/i18n/config";
+import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Home, CheckCircle2, AlertCircle, ExternalLink } from "lucide-react";
@@ -202,9 +202,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, country } = await params;
   const data = COUNTRY_DATA[country];
   if (!data) return {};
+  const hreflangAlternates: Record<string, string> = {};
+  for (const [locale, tags] of Object.entries(hreflangMap)) {
+    for (const tag of tags) {
+      hreflangAlternates[tag] = `https://buymydar.com/${locale}/mre/${country}`;
+    }
+  }
+  hreflangAlternates["x-default"] = `https://buymydar.com/fr/mre/${country}`;
   return {
     title: `MRE ${data.name} — Crédit immobilier Maroc — BuyMyDar`,
     description: `Guide complet pour les MRE résidant en ${data.name} : documents requis, transferts, banques partenaires et taux immobiliers Maroc.`,
+    alternates: {
+      canonical: `https://buymydar.com/${lang}/mre/${country}`,
+      languages: hreflangAlternates,
+    },
   };
 }
 

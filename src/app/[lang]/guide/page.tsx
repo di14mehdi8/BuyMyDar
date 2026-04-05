@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { locales, type Locale } from "@/lib/i18n/config";
+import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -15,6 +15,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
+  const hreflangAlternates: Record<string, string> = {};
+  for (const [locale, tags] of Object.entries(hreflangMap)) {
+    for (const tag of tags) {
+      hreflangAlternates[tag] = `https://buymydar.com/${locale}/guide`;
+    }
+  }
+  hreflangAlternates["x-default"] = "https://buymydar.com/fr/guide";
   return {
     title: lang === "ar"
       ? "دليل شراء عقار في المغرب — BuyMyDar"
@@ -24,10 +31,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: lang === "fr"
       ? "Les 7 étapes pour acheter un bien immobilier au Maroc : de la recherche à la signature chez le notaire."
       : "7 steps to buy real estate in Morocco: from property search to notary signing.",
+    alternates: {
+      canonical: `https://buymydar.com/${lang}/guide`,
+      languages: hreflangAlternates,
+    },
   };
 }
 
-const STEPS = [
+const STEPS_FR = [
   {
     n: 1, icon: Search, color: "bg-brand-600",
     title: "Rechercher un bien immobilier",
@@ -57,8 +68,8 @@ const STEPS = [
     title: "Explorer les possibilités de financement",
     subtitle: "Comparez les offres et simulez vos mensualités",
     content: [
-      "Consultez BuyMyDar pour comparer les 8 banques marocaines : taux fixe de 4,45% (CIH) à 4,90% (CDM) en avril 2026.",
-      "Taux fixe vs variable : le fixe offre la sécurité ; le variable est indexé sur les indices BAM (BDT/TMP) et peut baisser si le taux directeur recule.",
+      "Consultez BuyMyDar pour comparer les 8 banques marocaines : taux fixe de 4,45% (CIH) à 4,90% (CDM) en 2026.",
+      "Taux fixe vs variable : le fixe offre la sécurité ; le variable est indexé sur les indices BAM et peut baisser si le taux directeur recule.",
       "Daam Sakane : si le bien est ≤ 300 000 DH, l'État subventionne jusqu'à 100 000 DH. Vérifiez votre éligibilité.",
       "MRE : l'apport minimum est de 30% du prix, versé en devises étrangères (art. 793 Office des Changes). Certaines banques acceptent jusqu'à 30 ans.",
       "Simulation : pour un prêt de 1,5M DH sur 20 ans à 4,65%, la mensualité totale (assurance incluse) est d'environ 9 800 DH/mois.",
@@ -73,7 +84,7 @@ const STEPS = [
       "Négociez au-delà du taux : frais de dossier (souvent waivables), délai de déblocage des fonds, conditions de remboursement anticipé.",
       "L'Indemnité de Remboursement Anticipé (IRA) est plafonnée par BAM à 3% du capital restant ou 6 mois d'intérêts (le moindre des deux).",
       "L'assurance emprunteur (ADI) est obligatoire. Le taux de marché est d'environ 0,43%/an du capital initial. Négociez-la séparément.",
-      "Demandez la Fiche d'Information Standardisée Européenne (FISE) à chaque banque pour comparer le Taux Annuel Effectif Global (TAEG).",
+      "Demandez la Fiche d'Information Standardisée (FISE) à chaque banque pour comparer le Taux Annuel Effectif Global (TAEG).",
     ],
   },
   {
@@ -114,10 +125,112 @@ const STEPS = [
   },
 ];
 
+const STEPS_EN = [
+  {
+    n: 1, icon: Search, color: "bg-brand-600",
+    title: "Search for a property",
+    subtitle: "Define your project and explore the market",
+    content: [
+      "Define your total budget (price + notary fees ~5-7% + bank fees) before starting property visits.",
+      "Compare prices per m² by city: Casablanca (Maarif, Ain Diab), Rabat (Agdal, Hay Riad), Marrakech (Guéliz, Hivernage), Tangier (Malabata, City Centre).",
+      "Prioritize properties with a registered Title Deed (Titre Foncier) — avoid unregistered melkiya titles which complicate financing.",
+      "Verify the property is free of liens (mortgages, seizures) via a special certificate from the Land Registry (Conservation Foncière).",
+      "For MREs: remote visits are possible, but appoint a trusted lawyer or family member to handle physical inspections.",
+    ],
+  },
+  {
+    n: 2, icon: FileSignature, color: "bg-violet-600",
+    title: "Sign the sale agreement",
+    subtitle: "The preliminary contract binds both parties",
+    content: [
+      "The sale agreement (compromis de vente) sets the price, conditions precedent, and completion deadline.",
+      "The standard deposit is 10% of the price. You forfeit it if you withdraw; the seller must pay double if they back out.",
+      "Include a mortgage condition clause: if the bank refuses your loan, you recover your deposit in full.",
+      "Typical timeline from agreement to final deed: 2 to 4 months depending on the bank and your file.",
+      "Documents needed: national ID, proof of address, deposit cheque. For MREs: passport + residence permit.",
+    ],
+  },
+  {
+    n: 3, icon: Landmark, color: "bg-amber-500",
+    title: "Explore financing options",
+    subtitle: "Compare offers and simulate your monthly payments",
+    content: [
+      "Use BuyMyDar to compare all 8 Moroccan banks: fixed rates from 4.45% (CIH) to 4.90% (CDM) in 2026.",
+      "Fixed vs variable rate: fixed offers certainty; variable is indexed to BAM benchmarks and can drop if the policy rate falls.",
+      "Daam Sakane: if the property is ≤ 300,000 DH, the government subsidises up to 100,000 DH. Check your eligibility.",
+      "MRE: minimum 30% down payment required in foreign currency (Office des Changes Art. 793). Some banks lend up to 30 years.",
+      "Example: a 1.5M DH loan over 20 years at 4.65% gives a total monthly payment (insurance included) of approx. 9,800 DH.",
+    ],
+  },
+  {
+    n: 4, icon: SlidersHorizontal, color: "bg-emerald-600",
+    title: "Find the best loan offer",
+    subtitle: "Negotiate the rate and compare terms",
+    content: [
+      "Don't limit yourself to your usual bank — competing banks often offer better terms to attract new customers.",
+      "Negotiate beyond the rate: processing fees (often waivable), fund release timeline, early repayment conditions.",
+      "The Early Repayment Penalty (IRA) is capped by BAM at 3% of remaining capital or 6 months of interest (whichever is lower).",
+      "Borrower insurance (ADI) is mandatory. Market rate is approximately 0.43%/year on the initial capital. Negotiate it separately.",
+      "Request the Standardised Information Sheet (FISE) from each bank to compare the Annual Percentage Rate (APR).",
+    ],
+  },
+  {
+    n: 5, icon: FolderOpen, color: "bg-rose-600",
+    title: "Prepare your loan application",
+    subtitle: "Gather all required supporting documents",
+    content: [
+      "Salaried resident: last 3 pay slips, recent employment certificate, 6 bank statements, 2 tax returns, sale agreement.",
+      "Civil servant: salary certificate from the Trésorerie Générale du Royaume, latest assignment order.",
+      "Self-employed: business licence, last 2 certified balance sheets, 12 bank statements, CNSS affiliation certificate.",
+      "MRE: all of the above + residence permit, translated pay slips, and proof of foreign currency down payment (≥30%).",
+      "Tip: prepare scanned copies in advance — delays are usually caused by document back-and-forth, not bank processing time.",
+    ],
+  },
+  {
+    n: 6, icon: CheckCircle2, color: "bg-teal-600",
+    title: "Get bank approval",
+    subtitle: "From application submission to formal loan offer",
+    content: [
+      "Average processing time: 10 to 30 business days depending on the bank and file complexity.",
+      "The bank runs a credit analysis (debt-to-income ≤ 33%), a property valuation, and a guarantees check.",
+      "A verbal or written approval in principle is not binding — wait for the signed official loan offer.",
+      "If refused: request precise reasons, address the blockers (missing documents, DTI too high), then apply to another bank.",
+      "MREs: some banks have overseas correspondents (notably in France and Spain) to help build your file remotely.",
+    ],
+  },
+  {
+    n: 7, icon: Key, color: "bg-orange-500",
+    title: "Finalise and sign at the notary",
+    subtitle: "The notarial deed and key handover",
+    content: [
+      "The final sale deed must be signed before a Moroccan notary (or adoul for unregistered properties).",
+      "The notary verifies the ownership chain, clears any mortgages, and officially transfers the title deed to your name.",
+      "Typical acquisition costs: registration duties (4%), land registry (1.5%), notary fees (~0.5%), mortgage (1%) — total ~6-7%.",
+      "Bank funds are released by direct transfer to the seller or their notary on the day of signing.",
+      "After signing: the title deed update at the Conservation Foncière takes 1 to 3 months. You then receive the TF in your name.",
+    ],
+  },
+];
+
+const STEPS_BY_LANG: Record<string, typeof STEPS_FR> = {
+  fr: STEPS_FR,
+  en: STEPS_EN,
+  ar: STEPS_FR, // Arabic content falls back to French for now
+};
+
+const STEP_LABEL: Record<string, string> = {
+  fr: "Étape",
+  en: "Step",
+  ar: "الخطوة",
+};
+
 export default async function GuidePage({ params }: Props) {
   const { lang: rawLang } = await params;
   const lang = rawLang as Locale;
   if (!locales.includes(lang)) notFound();
+
+  const STEPS = STEPS_BY_LANG[lang] ?? STEPS_FR;
+  const stepLabel = STEP_LABEL[lang] ?? "Step";
 
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -174,7 +287,9 @@ export default async function GuidePage({ params }: Props) {
               {/* Content */}
               <div className="pb-8 flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-1">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Étape {step.n}</span>
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    {stepLabel} {step.n}
+                  </span>
                 </div>
                 <h2 className="text-xl font-bold text-slate-900 mb-1">{step.title}</h2>
                 <p className="text-sm text-slate-500 mb-4">{step.subtitle}</p>

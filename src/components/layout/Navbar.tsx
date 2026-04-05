@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Menu, X, BarChart2, BookOpen, Users, ChevronDown, Map, FileText } from "lucide-react";
+import { Menu, X, BarChart2, Users, ChevronDown, Map } from "lucide-react";
 import { locales, localeNames, localeFlags, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -13,11 +13,10 @@ interface NavbarProps {
   dict: {
     simulator: string;
     banks: string;
-    insights: string;
     mre: string;
     guide: string;
-    mourabaha: string;
     login: string;
+    contact: string;
     cta: string;
   };
 }
@@ -34,19 +33,17 @@ export function Navbar({ lang, dict }: NavbarProps) {
   }, []);
 
   const links = [
-    { href: `/${lang}#simulator`, label: dict.simulator,  icon: BarChart2 },
-    { href: `/${lang}#banks`,     label: dict.banks,      icon: BarChart2 },
-    { href: `/${lang}/guide`,     label: dict.guide,      icon: Map },
-    { href: `/${lang}/mre`,       label: dict.mre,        icon: Users },
-    { href: `/${lang}#insights`,  label: dict.insights,   icon: BookOpen },
-    { href: `/${lang}/mourabaha`, label: dict.mourabaha,  icon: FileText },
+    { href: `/${lang}#simulator`, label: dict.simulator, icon: BarChart2 },
+    { href: `/${lang}#banks`,     label: dict.banks,     icon: BarChart2 },
+    { href: `/${lang}/guide`,     label: dict.guide,     icon: Map },
+    { href: `/${lang}/mre`,       label: dict.mre,       icon: Users },
   ];
 
   return (
     <header
       className={cn(
-        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
-        scrolled ? "navbar-glass border-b border-white/60 shadow-sm" : "bg-transparent"
+        "sticky top-0 inset-x-0 z-50 transition-all duration-300",
+        scrolled ? "navbar-glass border-b border-white/60 shadow-sm" : "bg-white/95 backdrop-blur-sm"
       )}
       style={{ height: "var(--header-height)" }}
     >
@@ -128,6 +125,13 @@ export function Navbar({ lang, dict }: NavbarProps) {
             </AnimatePresence>
           </div>
 
+          <Link
+            href={`/${lang}/contact`}
+            className="hidden md:flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium
+                       border border-slate-200 text-slate-600 hover:border-brand-300 hover:text-brand-600 transition-all"
+          >
+            {dict.contact}
+          </Link>
           <Link href={`/${lang}#simulator`} className="hidden md:flex btn-primary px-5 py-2.5 text-sm">
             {dict.cta}
           </Link>
@@ -160,36 +164,55 @@ export function Navbar({ lang, dict }: NavbarProps) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-white/96 backdrop-blur-xl border-b border-slate-100 overflow-hidden"
+            className="md:hidden bg-white border-b border-slate-100 shadow-lg overflow-hidden"
           >
-            <div className="px-4 py-4 space-y-1">
-              {links.map(({ href, label, icon: Icon }) => (
+            <div className="px-3 py-2">
+              {/* Nav links — compact rows */}
+              {links.map(({ href, label }) => (
                 <Link
                   key={href}
                   href={href}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
+                  className="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium
                              text-slate-700 hover:bg-brand-50 hover:text-brand-600 transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
-                  <Icon className="w-4 h-4 text-slate-400 shrink-0" />
                   {label}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-slate-100 grid grid-cols-3 gap-2">
-                {locales.map((l) => (
-                  <Link
-                    key={l}
-                    href={`/${l}`}
-                    className={cn(
-                      "flex flex-col items-center gap-1 py-2.5 rounded-xl text-xs font-semibold transition-all",
-                      l === lang ? "bg-brand-600 text-white" : "bg-slate-50 text-slate-600 hover:bg-slate-100"
-                    )}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <span className="text-lg">{localeFlags[l]}</span>
-                    <span>{localeNames[l].split(" ")[0]}</span>
-                  </Link>
-                ))}
+
+              {/* Divider */}
+              <div className="my-2 border-t border-slate-100" />
+
+              {/* Language + CTA row */}
+              <div className="flex items-center justify-between px-1 pb-2 gap-3">
+                {/* Language chips */}
+                <div className="flex items-center gap-1.5">
+                  {locales.map((l) => (
+                    <Link
+                      key={l}
+                      href={`/${l}`}
+                      className={cn(
+                        "flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all",
+                        l === lang
+                          ? "bg-brand-600 text-white"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      )}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <span className="text-sm leading-none">{localeFlags[l]}</span>
+                      <span className="uppercase">{l}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <Link
+                  href={`/${lang}#simulator`}
+                  className="btn-primary px-4 py-2 text-xs shrink-0"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {dict.cta}
+                </Link>
               </div>
             </div>
           </motion.div>

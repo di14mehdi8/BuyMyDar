@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { locales, type Locale } from "@/lib/i18n/config";
+import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Globe, Home } from "lucide-react";
@@ -12,12 +12,23 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
+  const hreflangAlternates: Record<string, string> = {};
+  for (const [locale, tags] of Object.entries(hreflangMap)) {
+    for (const tag of tags) {
+      hreflangAlternates[tag] = `https://buymydar.com/${locale}/mre`;
+    }
+  }
+  hreflangAlternates["x-default"] = "https://buymydar.com/fr/mre";
   return {
     title: lang === "fr"
       ? "MRE — Financer un bien immobilier au Maroc depuis l'étranger — BuyMyDar"
       : "MRE — Finance Property in Morocco from Abroad — BuyMyDar",
     description:
       "Guides pays par pays pour les Marocains Résidant à l'Étranger : France, Espagne, Canada, Belgique, Italie.",
+    alternates: {
+      canonical: `https://buymydar.com/${lang}/mre`,
+      languages: hreflangAlternates,
+    },
   };
 }
 

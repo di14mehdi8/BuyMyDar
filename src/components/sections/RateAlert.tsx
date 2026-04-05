@@ -19,8 +19,27 @@ export function RateAlert() {
       return;
     }
     setError("");
-    // In production: POST to /api/rate-alert with { email, threshold }
-    setSubmitted(true);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: "e762052a-f003-4565-9792-e5b8abae9495",
+          subject: `🔔 Nouvelle alerte taux — seuil ${threshold.toFixed(2)}%`,
+          from_name: "BuyMyDar Rate Alert",
+          email,
+          message: `Demande d'alerte taux immobilier Maroc\n\nEmail : ${email}\nSeuil cible : ${threshold.toFixed(2)}%\nTaux actuel le plus bas : ${bestRate.toFixed(2)}%`,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setError("Une erreur est survenue. Réessayez.");
+      }
+    } catch {
+      setError("Une erreur est survenue. Réessayez.");
+    }
   };
 
   return (
