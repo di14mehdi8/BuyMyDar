@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Home } from "lucide-react";
 import { formatCurrency } from "@/lib/mortgage/calculator";
-import { cn } from "@/lib/utils";
 
 /** Moroccan notary honorarium — degressive regulated scale */
 function notaryHonorarium(price: number): number {
@@ -109,8 +108,6 @@ const T: Record<string, Record<string, string>> = {
   },
 };
 
-interface FeeRow { label: string; sub: string; value: number }
-
 interface NotaryFeesCalculatorProps {
   lang?: string;
 }
@@ -121,30 +118,18 @@ export function NotaryFeesCalculator({ lang = "fr" }: NotaryFeesCalculatorProps)
 
   const t = T[lang] ?? T.fr;
   const fmt = (v: number) => formatCurrency(v, "MAD", lang);
-  const pct = (v: number) => `${((v / price) * 100).toFixed(2)}%`;
-
-  const fees = useMemo<{ rows: FeeRow[]; total: number; bankFees: number; totalBudget: number }>(() => {
+  const fees = useMemo(() => {
     const registration  = price * 0.04;
     const conservation  = price * 0.015 + 150;
     const honorarium    = notaryHonorarium(price);
     const tva           = honorarium * 0.10;
     const hypotheque    = loan > 0 ? loan * 0.01 + 150 : 0;
     const timbre        = 200;
-    const bankFees      = 1_000; // average bank dossier fee
+    const bankFees      = 1_000;
     const total = registration + conservation + honorarium + tva + hypotheque + timbre;
     const totalBudget = price + total + bankFees;
-
-    const rows: FeeRow[] = [
-      { label: t.registration,   sub: t.registration_sub,   value: registration  },
-      { label: t.conservation,   sub: t.conservation_sub,   value: conservation  },
-      { label: t.honorarium,     sub: t.honorarium_sub,     value: honorarium    },
-      { label: t.tva,            sub: t.tva_sub,            value: tva           },
-      ...(loan > 0 ? [{ label: t.hypotheque, sub: t.hypotheque_sub, value: hypotheque }] : []),
-      { label: t.timbre,         sub: t.timbre_sub,         value: timbre        },
-      { label: t.bank_fees,      sub: t.bank_fees_sub,      value: bankFees      },
-    ];
-    return { rows, total, bankFees, totalBudget };
-  }, [price, loan, t]);
+    return { total, bankFees, totalBudget };
+  }, [price, loan]);
 
   const totalPct = ((fees.total / price) * 100).toFixed(1);
   const apport   = price - loan;
@@ -273,28 +258,6 @@ export function NotaryFeesCalculator({ lang = "fr" }: NotaryFeesCalculatorProps)
               </p>
               <p className="text-2xl font-bold text-amber-900">{fmt(fees.totalBudget)}</p>
               <p className="text-[10px] text-amber-600 mt-0.5">{t.total_budget_sub}</p>
-            </div>
-
-            {/* Breakdown */}
-            <div className="border border-slate-100 rounded-2xl overflow-hidden">
-              {fees.rows.map(({ label, sub, value }, i) => (
-                <div
-                  key={label}
-                  className={cn(
-                    "flex items-center justify-between px-4 py-3 hover:bg-slate-50/60 transition-colors",
-                    i !== fees.rows.length - 1 && "border-b border-slate-50"
-                  )}
-                >
-                  <div>
-                    <p className="text-sm text-slate-700">{label}</p>
-                    <p className="text-[10px] text-slate-400">{sub}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-slate-900 tabular-nums">{fmt(value)}</p>
-                    <p className="text-[10px] text-slate-400 tabular-nums">{pct(value)}</p>
-                  </div>
-                </div>
-              ))}
             </div>
 
             <p className="text-[10px] text-slate-400 mt-3 leading-relaxed px-1">

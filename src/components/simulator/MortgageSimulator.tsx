@@ -413,11 +413,6 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
     []
   );
 
-  const savingsVsAverage = result.totalMonthly - calculateMortgage({
-    principal, annualRate: MARKET_AVERAGE_RATE,
-    termMonths: termYears * 12, insuranceRate,
-  }).totalMonthly;
-
   return (
     <section id="simulator" className="scroll-mt-28" aria-labelledby="sim-heading">
       <div className="card overflow-hidden shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
@@ -604,82 +599,6 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   <ResultRow label={dict.result_total}     value={fmt(result.totalPayment)} />
                   <ResultRow label={dict.result_interest}  value={fmt(result.totalInterest)} />
                   <ResultRow label={dict.result_insurance} value={fmt(result.totalInsurance)} />
-                </div>
-
-                {/* Savings vs market */}
-                {Math.abs(savingsVsAverage) > 10 && (
-                  <div className={cn(
-                    "rounded-xl px-4 py-3 text-xs font-medium",
-                    savingsVsAverage < 0
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
-                      : "bg-amber-50 text-amber-700 border border-amber-100"
-                  )}>
-                    {savingsVsAverage < 0
-                      ? `✓ ${fmt(Math.abs(savingsVsAverage))}${T.per_month} ${T.saved_vs_avg}`
-                      : `↑ ${fmt(Math.abs(savingsVsAverage))}${T.per_month} ${T.above_avg}`}
-                  </div>
-                )}
-
-                {/* Acquisition fees summary */}
-                {(() => {
-                  const registration  = principal * 0.04;
-                  const conservation  = principal * 0.015 + 150;
-                  const notaryH       = (() => { const b = [{c:100000,r:0.015},{c:500000,r:0.01},{c:2000000,r:0.005},{c:Infinity,r:0.0025}]; let f=0,p=0; for(const{c,r}of b){if(principal<=p)break;f+=(Math.min(principal,c)-p)*r;p=c;} return f; })();
-                  const tva           = notaryH * 0.10;
-                  const hypotheque    = principal * 0.01 + 150;
-                  const bankFee       = 1_000;
-                  const totalAcqFees  = registration + conservation + notaryH + tva + hypotheque + 200 + bankFee;
-                  const totalBudget   = principal + totalAcqFees;
-                  return (
-                    <div className="card p-4 space-y-2">
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                        {T.acq_title}
-                      </p>
-                      <ResultRow label={T.acq_registration}  value={fmt(registration)} />
-                      <ResultRow label={T.acq_conservation}  value={fmt(conservation)} />
-                      <ResultRow label={T.acq_notary}        value={fmt(notaryH + tva)} />
-                      <ResultRow label={T.acq_hypotheque}    value={fmt(hypotheque)} />
-                      <ResultRow label={T.acq_bank_fees}     value={fmt(bankFee)} sub={T.acq_bank_fees_sub} />
-                      <div className="border-t border-slate-100 pt-2 mt-2">
-                        <ResultRow label={T.acq_total}       value={fmt(totalAcqFees)} />
-                      </div>
-                      <div className="rounded-xl bg-amber-50 border border-amber-100 px-3 py-2.5 mt-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-amber-800">{T.acq_total_budget}</span>
-                          <span className="text-sm font-bold text-amber-900">{fmt(totalBudget)}</span>
-                        </div>
-                        <p className="text-[10px] text-amber-600">{T.acq_total_budget_sub}</p>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Pre-approval conversion card */}
-                <div className="rounded-2xl overflow-hidden border border-orange-100">
-                  <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-4">
-                    <p className="text-white font-bold text-sm mb-0.5">
-                      {lang === "ar" ? "استمارتك جاهزة!" : lang === "en" ? "Your estimate is ready." : "Votre estimation est prête."}
-                    </p>
-                    <p className="text-orange-100 text-xs leading-relaxed">
-                      {lang === "ar"
-                        ? "احصل على موافقة مسبقة خلال ٤٨ ساعة — مجاني وبدون التزام."
-                        : lang === "en"
-                        ? "Get a pre-approval in 48h — free, no commitment."
-                        : "Obtenez une pré-approbation en 48h — gratuit, sans engagement."}
-                    </p>
-                  </div>
-                  <div className="bg-orange-50 px-5 py-3 flex items-center justify-between gap-3">
-                    <p className="text-xs text-orange-700 font-medium">
-                      {lang === "ar" ? "دوسيه رقمي • ١٠ دقائق" : lang === "en" ? "Online dossier · 10 min" : "Dossier en ligne · 10 min"}
-                    </p>
-                    <a
-                      href={`https://credit.buymydar.com/${lang}/register`}
-                      className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white
-                                 text-xs font-bold px-4 py-2 rounded-xl transition-colors shrink-0"
-                    >
-                      {lang === "ar" ? "ابدأ →" : lang === "en" ? "Start my file →" : "Démarrer mon dossier →"}
-                    </a>
-                  </div>
                 </div>
 
                 <p className="text-[11px] text-slate-400 text-center px-2 leading-relaxed">
