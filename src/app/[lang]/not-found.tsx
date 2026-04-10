@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NotFoundRedirect } from "@/components/NotFoundRedirect";
 
 export default function NotFound() {
   return (
@@ -8,12 +9,15 @@ export default function NotFound() {
         <h1 className="text-2xl font-bold text-slate-900 mb-3">
           Page introuvable
         </h1>
-        <p className="text-slate-500 mb-8">
+        <p className="text-slate-500 mb-6">
           La page que vous recherchez n&apos;existe pas ou a été déplacée.
         </p>
-        <Link href="/fr" className="btn-primary">
-          Retour à l&apos;accueil
-        </Link>
+        <NotFoundRedirect href="/fr" />
+        <div className="mt-6">
+          <Link href="/fr" className="btn-primary">
+            Retour à l&apos;accueil
+          </Link>
+        </div>
       </div>
     </div>
   );
