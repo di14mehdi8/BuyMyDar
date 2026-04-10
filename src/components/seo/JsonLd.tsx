@@ -20,7 +20,7 @@ export function JsonLd({ lang, dict }: JsonLdProps) {
     provider: {
       "@type": "BankOrCreditUnion",
       name: bank.name,
-      url: bank.applyUrl,
+      url: bank.sourceUrl ?? `${baseUrl}/${lang}#banks`,
     },
     amount: {
       "@type": "MonetaryAmount",
