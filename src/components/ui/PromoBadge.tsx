@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Zap, Users, Star, Gift, Clock, Sparkles } from "lucide-react";
+import { X, Zap, Users, Star, Gift, Clock, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Promotion, PromoTag } from "@/lib/mortgage/calculator";
 
@@ -86,18 +86,6 @@ export function PromoBadge({ promo, size = "sm" }: PromoBadgeProps) {
                 <p className="text-slate-600 text-sm leading-relaxed mb-5">
                   {promo.detailFr}
                 </p>
-                {promo.url && (
-                  <a
-                    href={promo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold
-                               bg-brand-600 text-white hover:bg-brand-700 transition-colors"
-                  >
-                    En savoir plus
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
               </div>
             </motion.div>
           </>

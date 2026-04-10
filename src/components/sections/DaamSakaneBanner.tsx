@@ -64,9 +64,7 @@ export function DaamSakaneBanner() {
 
           {/* CTA */}
           <a
-            href={DAAM_SAKANE.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="https://credit.buymydar.com/fr/register"
             className="inline-flex items-center gap-2 shrink-0 px-5 py-2.5 rounded-xl
                        bg-white text-emerald-800 text-sm font-bold hover:bg-green-50 transition-colors
                        shadow-lg shadow-black/20"

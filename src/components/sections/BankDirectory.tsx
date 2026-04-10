@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ExternalLink, Check, X, SlidersHorizontal,
+  Check, X, SlidersHorizontal,
   ChevronUp, ChevronDown, Star, Users,
 } from "lucide-react";
 import { BANK_RATES, type BankRateEntry } from "@/lib/mortgage/calculator";
@@ -318,9 +318,7 @@ function BankRow({
       {/* CTA */}
       <td className="py-4 px-4">
         <a
-          href={bank.applyUrl}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
+          href={`https://credit.buymydar.com/${lang}/register`}
           className={cn(
             "inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap",
             isBest
@@ -329,7 +327,6 @@ function BankRow({
           )}
         >
           {dict.apply_btn}
-          <ExternalLink className="w-3 h-3" />
         </a>
       </td>
     </motion.tr>

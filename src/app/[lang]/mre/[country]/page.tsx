@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Home, CheckCircle2, AlertCircle, ExternalLink } from "lucide-react";
+import { ArrowRight, Home, CheckCircle2, AlertCircle } from "lucide-react";
 import { BANK_RATES } from "@/lib/mortgage/calculator";
 
 type Props = { params: Promise<{ lang: string; country: string }> };
@@ -260,12 +260,9 @@ export default async function MRECountryPage({ params }: Props) {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {mreBanks.map((bank) => (
-              <a
+              <div
                 key={bank.id}
-                href={bank.applyUrl}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-brand-100 hover:border-brand-300 transition-colors group"
+                className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-brand-100"
               >
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">{bank.name}</p>
@@ -276,8 +273,7 @@ export default async function MRECountryPage({ params }: Props) {
                     {bank.maxDurationMREYears && ` · ${bank.maxDurationMREYears} ans max`}
                   </p>
                 </div>
-                <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-brand-500 transition-colors" />
-              </a>
+              </div>
             ))}
           </div>
           <p className="text-[10px] text-brand-400 mt-2">Partenaires {data.partnerBanksFr}</p>

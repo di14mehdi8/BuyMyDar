@@ -772,9 +772,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                         </div>
                       </div>
                       <a
-                        href={bank.applyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
+                        href={`https://credit.buymydar.com/${lang}/register`}
                         className="shrink-0 btn-ghost py-1.5 px-2 text-xs"
                       >
                         <ArrowRight className="w-3.5 h-3.5" />

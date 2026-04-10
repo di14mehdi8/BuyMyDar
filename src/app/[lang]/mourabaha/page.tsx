@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { locales, type Locale, hreflangMap } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Home, CheckCircle2, Info, ExternalLink } from "lucide-react";
+import { ArrowRight, Home, CheckCircle2, Info } from "lucide-react";
+import { MourabahaSimulator } from "@/components/simulator/MourabahaSimulator";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -31,37 +32,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
-
-const BANKS = [
-  {
-    name: "Dar Assafaa",
-    parent: "Filiale d'Attijariwafa Bank",
-    note: "Banque participative dédiée — gamme complète Mourabaha, Ijara, Musharaka",
-    url: "https://www.darassafaa.ma",
-    color: "#006233",
-  },
-  {
-    name: "Al Akhdar Bank",
-    parent: "Filiale de Crédit Agricole du Maroc",
-    note: "Finance participative — Mourabaha immobilier, Ijara",
-    url: "https://www.alakhdarbank.ma",
-    color: "#2d8c3e",
-  },
-  {
-    name: "Umnia Bank",
-    parent: "Filiale de CIH Bank",
-    note: "Banque participative — Mourabaha et Ijara pour l'immobilier",
-    url: "https://www.umniabank.ma",
-    color: "#e63329",
-  },
-  {
-    name: "Bank Assafa",
-    parent: "Filiale de Société Générale / Saham",
-    note: "Mourabaha immobilier résidents — produits conformes charia",
-    url: "https://www.bankassafa.ma",
-    color: "#D2232A",
-  },
-];
 
 export default async function MourabahaPage({ params }: Props) {
   const { lang: rawLang } = await params;
@@ -170,29 +140,6 @@ export default async function MourabahaPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Banks */}
-      <div className="mb-8">
-        <h2 className="font-bold text-slate-900 text-lg mb-4">Banques participatives au Maroc</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {BANKS.map((bank) => (
-            <a
-              key={bank.name}
-              href={bank.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card card-hover p-5 group flex items-start justify-between gap-3"
-            >
-              <div>
-                <p className="font-bold text-slate-900 group-hover:text-brand-600 transition-colors">{bank.name}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{bank.parent}</p>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">{bank.note}</p>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-brand-500 shrink-0 mt-1 transition-colors" />
-            </a>
-          ))}
-        </div>
-      </div>
-
       {/* Eligibility */}
       <div className="card p-6 mb-8">
         <h2 className="font-bold text-slate-900 text-lg mb-4">Conditions d'éligibilité</h2>
@@ -212,6 +159,11 @@ export default async function MourabahaPage({ params }: Props) {
         </ul>
       </div>
 
+      {/* Mourabaha Simulator */}
+      <div className="mb-8">
+        <MourabahaSimulator lang={lang} />
+      </div>
+
       {/* Info note */}
       <div className="flex items-start gap-3 rounded-2xl bg-blue-50 border border-blue-100 p-5 mb-8">
         <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
@@ -225,33 +177,30 @@ export default async function MourabahaPage({ params }: Props) {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Link
-          href={`/${lang}#simulator`}
-          className="rounded-2xl p-6 text-white text-center"
-          style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}
-        >
-          <p className="font-bold mb-1">Comparer les taux classiques</p>
-          <p className="text-blue-200 text-xs mb-3">Simulez votre crédit immobilier standard</p>
-          <span className="inline-flex items-center gap-1 text-sm font-semibold">
-            Simuler <ArrowRight className="w-4 h-4" />
-          </span>
-        </Link>
-        <a
-          href="https://www.darassafaa.ma"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-2xl p-6 text-white text-center"
-          style={{ background: "linear-gradient(135deg,#059669 0%,#065f46 100%)" }}
-        >
-          <p className="font-bold mb-1">Simuler une Mourabaha</p>
-          <p className="text-emerald-200 text-xs mb-3">Outil officiel Dar Assafaa</p>
-          <span className="inline-flex items-center gap-1 text-sm font-semibold">
-            Dar Assafaa <ExternalLink className="w-4 h-4" />
-          </span>
-        </a>
-      </div>
+      {/* Bottom CTA */}
+      <a
+        href="https://credit.buymydar.com?utm_source=buymydar&utm_medium=mourabaha_page"
+        className="rounded-2xl p-6 text-white text-center block"
+        style={{ background: "linear-gradient(135deg,#059669 0%,#065f46 100%)" }}
+      >
+        <p className="font-bold mb-1">
+          {lang === "ar"
+            ? "احصل على مرافقة متخصصة في التمويل التشاركي"
+            : lang === "en"
+            ? "Get expert guidance on Mourabaha financing"
+            : "Bénéficiez d'un accompagnement expert en financement Mourabaha"}
+        </p>
+        <p className="text-emerald-200 text-xs mb-3">
+          {lang === "ar"
+            ? "مقارنة البنوك • مونتاج الملف • مجاني"
+            : lang === "en"
+            ? "Bank comparison · File preparation · Free"
+            : "Comparaison des banques · Montage dossier · Gratuit"}
+        </p>
+        <span className="inline-flex items-center gap-1 text-sm font-semibold">
+          credit.buymydar.com <ArrowRight className="w-4 h-4" />
+        </span>
+      </a>
     </main>
   );
 }
