@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Calculator, Info,
   ArrowRight, RefreshCw, ChevronRight, Download,
-  Users, RotateCcw,
 } from "lucide-react";
 import {
   calculateMortgage, formatCurrency, convertCurrency,
@@ -361,10 +360,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
     if (bcMaxMonthly <= 0) return 0;
     const r = bcRate / 12;
     const n = bcTerm * 12;
-    const insMonthly = (1 * bcRate * 0.0043) / 12; // insurance per MAD
-    // net monthly available for amortization (subtract insurance on capital)
-    // iterate: capital = (maxMonthly - capital*ins/12) * [(1+r)^n-1]/[r*(1+r)^n]
-    // Simplified: capital ≈ maxMonthly / (r*(1+r)^n/[(1+r)^n-1] + ins/12)
+    // capital ≈ maxMonthly / (annuityCoeff + insuranceCoeff)
     const factor = Math.pow(1 + r, n);
     const annuityCoeff = (r * factor) / (factor - 1);
     const insCoeff = 0.0043 / 12;
@@ -730,7 +726,7 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                     <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
                     <Tooltip
                       contentStyle={{ borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: "12px" }}
-                      formatter={(v: number) => [fmt(v / (CURRENCY_RATES[currency] ?? 1)), ""]}
+                      formatter={(v: number) => [formatCurrency(v, currency, lang), ""]}
                     />
                     <Area type="monotone" dataKey="balance"  name={T.chart_balance}  stroke="#1E3A6E" strokeWidth={2} fill="url(#gBalance)" />
                     <Area type="monotone" dataKey="interest" name={T.chart_interest} stroke="#F59E0B" strokeWidth={2} fill="url(#gInterest)" />
@@ -782,7 +778,8 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                 {BANK_RATES.map((bank, i) => {
                   const sim = calculateMortgage({ principal, annualRate: bank.fixedRate, termMonths: termYears * 12, insuranceRate });
                   const isBest = bank.id === bestBank.id;
-                  const barW = 100 - ((bank.fixedRate - Math.min(...BANK_RATES.map(b => b.fixedRate))) / (Math.max(...BANK_RATES.map(b => b.fixedRate)) - Math.min(...BANK_RATES.map(b => b.fixedRate)))) * 80;
+                  const rateRange = Math.max(...BANK_RATES.map(b => b.fixedRate)) - Math.min(...BANK_RATES.map(b => b.fixedRate));
+                  const barW = rateRange === 0 ? 100 : 100 - ((bank.fixedRate - Math.min(...BANK_RATES.map(b => b.fixedRate))) / rateRange) * 80;
                   return (
                     <div
                       key={bank.id}

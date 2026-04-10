@@ -64,7 +64,7 @@ export function Navbar({ lang, dict }: NavbarProps) {
         {/* Logo */}
         <Link href={`/${lang}`} className="flex items-center gap-2.5 shrink-0 group">
           <Image
-            src={scrolled ? "/logo.png" : "/logo.png"}
+            src="/logo.png"
             alt="BuyMyDar logo"
             width={36}
             height={36}
