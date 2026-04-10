@@ -164,6 +164,10 @@
       {
         "q": "Qu'est-ce qu'un compte Dirham Convertible ?",
         "a": "Un compte Dirham Convertible (ou compte en devises) est un compte bancaire marocain permettant aux MRE de transférer librement leurs fonds entre le Maroc et l'étranger. Il est indispensable pour financer un bien immobilier au Maroc depuis l'étranger."
+      },
+      {
+        "q": "Quels sont les frais cachés lors d'un achat immobilier au Maroc ?",
+        "a": "Au-delà du prix du bien, prévoyez environ 6 à 7% de frais d'acquisition : droits d'enregistrement (4%), conservation foncière (1,5% + 150 DH), honoraires notaire (barème dégressif + 10% TVA), inscription hypothécaire (1% du prêt + 150 DH), timbre fiscal (200 DH), et frais de dossier bancaire (500 à 1 500 DH, souvent négociable). Notre simulateur de frais de notaire calcule ces montants automatiquement."
       }
     ]
   }

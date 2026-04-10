@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Menu, X, BarChart2, Users, ChevronDown, Map } from "lucide-react";
+import { Menu, X, BarChart2, Users, ChevronDown, Map, Landmark } from "lucide-react";
 import { locales, localeNames, localeFlags, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ interface NavbarProps {
     banks: string;
     mre: string;
     guide: string;
+    mourabaha: string;
     login: string;
     contact: string;
     cta: string;
@@ -25,6 +27,7 @@ export function Navbar({ lang, dict }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 12);
@@ -32,11 +35,20 @@ export function Navbar({ lang, dict }: NavbarProps) {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
+  // Swap just the locale segment so language switcher preserves current page
+  const localizedPath = (l: Locale) => {
+    const segments = pathname.split("/");
+    segments[1] = l;
+    // Strip hash anchors from path (can't be server-side)
+    return segments.join("/").split("#")[0];
+  };
+
   const links = [
-    { href: `/${lang}#simulator`, label: dict.simulator, icon: BarChart2 },
-    { href: `/${lang}#banks`,     label: dict.banks,     icon: BarChart2 },
-    { href: `/${lang}/guide`,     label: dict.guide,     icon: Map },
-    { href: `/${lang}/mre`,       label: dict.mre,       icon: Users },
+    { href: `/${lang}#simulator`,  label: dict.simulator,  icon: BarChart2 },
+    { href: `/${lang}#banks`,      label: dict.banks,      icon: BarChart2 },
+    { href: `/${lang}/guide`,      label: dict.guide,      icon: Map },
+    { href: `/${lang}/mre`,        label: dict.mre,        icon: Users },
+    { href: `/${lang}/mourabaha`,  label: dict.mourabaha,  icon: Landmark },
   ];
 
   return (
@@ -107,7 +119,7 @@ export function Navbar({ lang, dict }: NavbarProps) {
                   {locales.map((l) => (
                     <Link
                       key={l}
-                      href={`/${l}`}
+                      href={localizedPath(l)}
                       className={cn(
                         "flex items-center gap-3 px-4 py-3 text-sm transition-colors",
                         l === lang
@@ -132,9 +144,13 @@ export function Navbar({ lang, dict }: NavbarProps) {
           >
             {dict.contact}
           </Link>
-          <Link href={`/${lang}#simulator`} className="hidden md:flex btn-primary px-5 py-2.5 text-sm">
-            {dict.cta}
-          </Link>
+          <a
+            href={`https://credit.buymydar.com/${lang}/register`}
+            className="hidden md:flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold
+                       bg-orange-500 hover:bg-orange-600 text-white transition-all shadow-sm shadow-orange-500/20"
+          >
+            {lang === "ar" ? "موافقة مسبقة ٤٨س*" : lang === "en" ? "Pre-approval 48h*" : "Pré-approbation 48h*"}
+          </a>
 
           <button
             className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors"
@@ -190,7 +206,7 @@ export function Navbar({ lang, dict }: NavbarProps) {
                   {locales.map((l) => (
                     <Link
                       key={l}
-                      href={`/${l}`}
+                      href={localizedPath(l)}
                       className={cn(
                         "flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all",
                         l === lang
@@ -205,14 +221,23 @@ export function Navbar({ lang, dict }: NavbarProps) {
                   ))}
                 </div>
 
-                {/* CTA */}
-                <Link
-                  href={`/${lang}#simulator`}
-                  className="btn-primary px-4 py-2 text-xs shrink-0"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {dict.cta}
-                </Link>
+                {/* CTAs */}
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/${lang}#simulator`}
+                    className="btn-primary px-4 py-2 text-xs shrink-0"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {dict.cta}
+                  </Link>
+                  <a
+                    href={`https://credit.buymydar.com/${lang}/register`}
+                    className="px-4 py-2 text-xs font-semibold rounded-xl bg-orange-500 text-white shrink-0"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    48h →
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>

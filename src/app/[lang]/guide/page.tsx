@@ -215,7 +215,7 @@ const STEPS_EN = [
 const STEPS_BY_LANG: Record<string, typeof STEPS_FR> = {
   fr: STEPS_FR,
   en: STEPS_EN,
-  ar: STEPS_FR, // Arabic content falls back to French for now
+  ar: STEPS_EN, // Arabic content falls back to English (better than French for non-AR speakers)
 };
 
 const STEP_LABEL: Record<string, string> = {

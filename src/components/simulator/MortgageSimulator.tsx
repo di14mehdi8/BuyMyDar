@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Calculator, TrendingDown, Info, ExternalLink,
+  Calculator, Info,
   ArrowRight, RefreshCw, ChevronRight, Download,
   Users, RotateCcw,
 } from "lucide-react";
@@ -47,6 +47,7 @@ const I18N: Record<string, Record<string, any>> = {
     chart_interest: "Intérêts annuels",
     tbl_year: "Année", tbl_payment: "Mensualité", tbl_principal: "Capital",
     tbl_interest: "Intérêts", tbl_balance: "Restant dû",
+    rates_updated: "Taux mis à jour :",
     sim_for: "Simulation pour", over: "sur", years_lbl: "ans",
     bc_salary: "Revenu mensuel net",
     bc_other: "Autres revenus (loyers, dividendes…)",
@@ -83,6 +84,16 @@ const I18N: Record<string, Record<string, any>> = {
     re_ira_sub: "3% capital ou 6 mois intérêts",
     re_check: "Vérifiez avec votre banque si l'IRA est incluse dans le nouveau prêt ou à régler au comptant.",
     reset: "Réinitialiser",
+    acq_title: "Frais d'acquisition estimés",
+    acq_registration: "Droits d'enregistrement (4%)",
+    acq_conservation: "Conservation foncière (1,5%)",
+    acq_notary: "Honoraires notaire + TVA",
+    acq_hypotheque: "Inscription hypothécaire (1%)",
+    acq_bank_fees: "Frais de dossier bancaire",
+    acq_bank_fees_sub: "souvent négociable",
+    acq_total: "Total frais d'acquisition",
+    acq_total_budget: "Budget total nécessaire",
+    acq_total_budget_sub: "montant emprunté + frais",
   },
   en: {
     tab_borrowing: "Borrowing Capacity",
@@ -106,6 +117,7 @@ const I18N: Record<string, Record<string, any>> = {
     chart_interest: "Annual interest",
     tbl_year: "Year", tbl_payment: "Payment", tbl_principal: "Principal",
     tbl_interest: "Interest", tbl_balance: "Balance",
+    rates_updated: "Rates updated:",
     sim_for: "Simulation for", over: "over", years_lbl: "years",
     bc_salary: "Net monthly income",
     bc_other: "Other income (rent, dividends…)",
@@ -142,6 +154,16 @@ const I18N: Record<string, Record<string, any>> = {
     re_ira_sub: "3% capital or 6 months interest",
     re_check: "Check with your bank if the IRA is included in the new loan or to be paid upfront.",
     reset: "Reset",
+    acq_title: "Estimated acquisition fees",
+    acq_registration: "Registration duties (4%)",
+    acq_conservation: "Land registry (1.5%)",
+    acq_notary: "Notary fees + VAT",
+    acq_hypotheque: "Mortgage registration (1%)",
+    acq_bank_fees: "Bank processing fee",
+    acq_bank_fees_sub: "often negotiable",
+    acq_total: "Total acquisition fees",
+    acq_total_budget: "Total budget needed",
+    acq_total_budget_sub: "loan amount + fees",
   },
   ar: {
     tab_borrowing: "قدرة الاقتراض",
@@ -165,6 +187,7 @@ const I18N: Record<string, Record<string, any>> = {
     chart_interest: "الفوائد السنوية",
     tbl_year: "السنة", tbl_payment: "القسط", tbl_principal: "الأصل",
     tbl_interest: "الفوائد", tbl_balance: "الرصيد",
+    rates_updated: "تاريخ تحديث الأسعار:",
     sim_for: "محاكاة لـ", over: "على مدى", years_lbl: "سنوات",
     bc_salary: "صافي الدخل الشهري",
     bc_other: "دخل آخر (إيجار، أرباح…)",
@@ -201,6 +224,16 @@ const I18N: Record<string, Record<string, any>> = {
     re_ira_sub: "3% رأس مال أو 6 أشهر فوائد",
     re_check: "تحقق مع بنكك إذا كانت الغرامة مدرجة في القرض الجديد أم تُدفع نقداً.",
     reset: "إعادة تعيين",
+    acq_title: "رسوم الاقتناء المقدرة",
+    acq_registration: "رسوم التسجيل (4%)",
+    acq_conservation: "المحافظة العقارية (1.5%)",
+    acq_notary: "أتعاب الموثق + TVA",
+    acq_hypotheque: "تسجيل الرهن (1%)",
+    acq_bank_fees: "رسوم ملف البنك",
+    acq_bank_fees_sub: "قابلة للتفاوض",
+    acq_total: "إجمالي رسوم الاقتناء",
+    acq_total_budget: "الميزانية الإجمالية المطلوبة",
+    acq_total_budget_sub: "مبلغ القرض + الرسوم",
   },
 };
 type Tab = "simulator" | "amortization" | "comparison" | "capacite" | "rachat";
@@ -591,33 +624,64 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   </div>
                 )}
 
-                {/* Best bank CTA */}
-                <div className="card p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{T.best_offer}</p>
-                    <span className="badge-green">
-                      <TrendingDown className="w-3 h-3" />
-                      {(bestBank.fixedRate * 100).toFixed(2)}%
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl overflow-hidden shadow-sm border border-slate-100">
-                        <BankLogo bankId={bestBank.id} size={36} />
+                {/* Acquisition fees summary */}
+                {(() => {
+                  const registration  = principal * 0.04;
+                  const conservation  = principal * 0.015 + 150;
+                  const notaryH       = (() => { const b = [{c:100000,r:0.015},{c:500000,r:0.01},{c:2000000,r:0.005},{c:Infinity,r:0.0025}]; let f=0,p=0; for(const{c,r}of b){if(principal<=p)break;f+=(Math.min(principal,c)-p)*r;p=c;} return f; })();
+                  const tva           = notaryH * 0.10;
+                  const hypotheque    = principal * 0.01 + 150;
+                  const bankFee       = 1_000;
+                  const totalAcqFees  = registration + conservation + notaryH + tva + hypotheque + 200 + bankFee;
+                  const totalBudget   = principal + totalAcqFees;
+                  return (
+                    <div className="card p-4 space-y-2">
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                        {T.acq_title}
+                      </p>
+                      <ResultRow label={T.acq_registration}  value={fmt(registration)} />
+                      <ResultRow label={T.acq_conservation}  value={fmt(conservation)} />
+                      <ResultRow label={T.acq_notary}        value={fmt(notaryH + tva)} />
+                      <ResultRow label={T.acq_hypotheque}    value={fmt(hypotheque)} />
+                      <ResultRow label={T.acq_bank_fees}     value={fmt(bankFee)} sub={T.acq_bank_fees_sub} />
+                      <div className="border-t border-slate-100 pt-2 mt-2">
+                        <ResultRow label={T.acq_total}       value={fmt(totalAcqFees)} />
                       </div>
-                      <div>
-                        <p className="font-semibold text-slate-900 text-sm">{bestBank.name}</p>
-                        <p className="text-xs text-slate-400">{T.lowest_rate}</p>
+                      <div className="rounded-xl bg-amber-50 border border-amber-100 px-3 py-2.5 mt-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-amber-800">{T.acq_total_budget}</span>
+                          <span className="text-sm font-bold text-amber-900">{fmt(totalBudget)}</span>
+                        </div>
+                        <p className="text-[10px] text-amber-600">{T.acq_total_budget_sub}</p>
                       </div>
                     </div>
+                  );
+                })()}
+
+                {/* Pre-approval conversion card */}
+                <div className="rounded-2xl overflow-hidden border border-orange-100">
+                  <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-4">
+                    <p className="text-white font-bold text-sm mb-0.5">
+                      {lang === "ar" ? "استمارتك جاهزة!" : lang === "en" ? "Your estimate is ready." : "Votre estimation est prête."}
+                    </p>
+                    <p className="text-orange-100 text-xs leading-relaxed">
+                      {lang === "ar"
+                        ? "احصل على موافقة مسبقة خلال ٤٨ ساعة — مجاني وبدون التزام."
+                        : lang === "en"
+                        ? "Get a pre-approval in 48h — free, no commitment."
+                        : "Obtenez une pré-approbation en 48h — gratuit, sans engagement."}
+                    </p>
+                  </div>
+                  <div className="bg-orange-50 px-5 py-3 flex items-center justify-between gap-3">
+                    <p className="text-xs text-orange-700 font-medium">
+                      {lang === "ar" ? "دوسيه رقمي • ١٠ دقائق" : lang === "en" ? "Online dossier · 10 min" : "Dossier en ligne · 10 min"}
+                    </p>
                     <a
-                      href={bestBank.applyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="btn-primary text-xs py-2 px-3"
+                      href={`https://credit.buymydar.com/${lang}/register`}
+                      className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white
+                                 text-xs font-bold px-4 py-2 rounded-xl transition-colors shrink-0"
                     >
-                      {dict.apply_cta}
-                      <ExternalLink className="w-3 h-3" />
+                      {lang === "ar" ? "ابدأ →" : lang === "en" ? "Start my file →" : "Démarrer mon dossier →"}
                     </a>
                   </div>
                 </div>
@@ -763,6 +827,11 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   );
                 })}
               </div>
+              <p className="text-[10px] text-slate-400 mt-3 text-right">
+                {T.rates_updated} {new Date(
+                  Math.max(...BANK_RATES.map(b => new Date(b.lastUpdated).getTime()))
+                ).toLocaleDateString(lang === "ar" ? "ar-MA" : lang === "en" ? "en-GB" : "fr-FR", { month: "long", year: "numeric" })}
+              </p>
             </motion.div>
           )}
           {/* BORROWING CAPACITY TAB */}

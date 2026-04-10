@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Building2, Globe2, Sparkles, MessageCircle } from "lucide-react";
+import { ArrowRight, ShieldCheck, Building2, Globe2, Sparkles } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/getDictionary";
-import { MARKET_AVERAGE_RATE, BANK_RATES } from "@/lib/mortgage/calculator";
+import { BANK_RATES } from "@/lib/mortgage/calculator";
 
 interface HeroSectionProps {
   lang: string;
@@ -117,24 +117,17 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
               {dict.subheadline}
             </motion.p>
 
-            {/* CTAs */}
+            {/* CTA */}
             <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-10">
-              <Link href={`/${lang}#simulator`} className="btn-primary px-7 py-3.5 text-base shadow-lg shadow-brand-600/25 hover:shadow-brand-600/40">
-                {dict.cta_primary}
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href={`/${lang}#banks`} className="btn-secondary px-7 py-3.5 text-base">
-                {dict.cta_secondary}
-              </Link>
-              <Link
-                href={`/${lang}/contact`}
+              <a
+                href={`https://credit.buymydar.com/${lang}/register`}
                 className="flex items-center gap-2 px-7 py-3.5 text-base font-semibold rounded-2xl
-                           border border-slate-200 text-slate-600 bg-white hover:border-brand-300
-                           hover:text-brand-600 transition-all"
+                           bg-orange-500 hover:bg-orange-600 text-white transition-all
+                           shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40"
               >
-                <MessageCircle className="w-4 h-4" />
-                {lang === "ar" ? "اتصل بنا" : lang === "en" ? "Contact us" : "Nous contacter"}
-              </Link>
+                <Sparkles className="w-4 h-4" />
+                {lang === "ar" ? "موافقة مسبقة خلال ٤٨ ساعة" : lang === "en" ? "Get Pre-Approved in 48h" : "Pré-approbation en 48h"}
+              </a>
             </motion.div>
 
             {/* Trust signals */}
@@ -154,70 +147,27 @@ export function HeroSection({ lang, dict }: HeroSectionProps) {
             </motion.div>
           </motion.div>
 
-          {/* ── Right: Stat cards ── */}
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-2 gap-3"
-          >
-            {/* Best rate — featured */}
-            <motion.div
-              variants={fadeUp}
-              className="col-span-2 card p-6 border-brand-100"
+          {/* ── Right: Best rate card ── */}
+          <motion.div variants={fadeUp} initial="hidden" animate="visible">
+            <div
+              className="card p-8 border-brand-100"
               style={{ background: "linear-gradient(135deg,#1E3A6E 0%,#0F2040 100%)" }}
             >
-              <p className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">
+              <p className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-4">
                 {T.best_rate}
               </p>
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-5xl font-bold text-white tracking-tight">
-                    {(lowestRate * 100).toFixed(2)}%
-                  </p>
-                  <p className="text-blue-200 text-sm mt-1">{lowestBank.name}</p>
-                </div>
-                <Link
-                  href={`/${lang}#simulator`}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/15
-                             hover:bg-white/25 text-white text-sm font-semibold transition-all"
-                >
-                  {T.simulate} <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Avg rate */}
-            <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{T.avg_rate}</p>
-              <p className="text-2xl font-bold text-slate-900">
-                {(MARKET_AVERAGE_RATE * 100).toFixed(2)}%
+              <p className="text-7xl font-bold text-white tracking-tight mb-2">
+                {(lowestRate * 100).toFixed(2)}%
               </p>
-              <p className="text-xs text-slate-400 mt-1">{T.morocco}</p>
-            </motion.div>
-
-            {/* Max term */}
-            <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{T.max_term}</p>
-              <p className="text-2xl font-bold text-slate-900">25 {lang === "ar" ? "سنة" : lang === "en" ? "yrs" : "ans"}</p>
-              <p className="text-xs text-slate-400 mt-1">{T.residents}</p>
-            </motion.div>
-
-            {/* Banks */}
-            <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{T.banks}</p>
-              <p className="text-2xl font-bold text-slate-900">8</p>
-              <p className="text-xs text-slate-400 mt-1">{T.compared}</p>
-            </motion.div>
-
-            {/* MRE eligible */}
-            <motion.div variants={fadeUp} className="card p-5 card-hover">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">MRE</p>
-              <p className="text-2xl font-bold text-emerald-600">
-                {BANK_RATES.filter((b) => b.mreEligible).length}
-              </p>
-              <p className="text-xs text-slate-400 mt-1">{T.mre_eligible}</p>
-            </motion.div>
+              <p className="text-blue-200 text-base mb-6">{lowestBank.name}</p>
+              <Link
+                href={`/${lang}#simulator`}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15
+                           hover:bg-white/25 text-white text-sm font-semibold transition-all"
+              >
+                {T.simulate} <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>

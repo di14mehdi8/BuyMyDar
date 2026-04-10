@@ -81,6 +81,7 @@ export function HomeTabs({ lang, dict }: HomeTabsProps) {
           {active === "compare" && (
             <>
               <MortgageSimulator lang={lang} dict={dict.simulator} />
+              <NotaryFeesCalculator lang={lang} />
               <BankDirectory lang={lang} dict={dict.banks} />
               <FAQSection dict={dict.faq} />
               {/* Contact CTA strip */}
@@ -122,7 +123,7 @@ export function HomeTabs({ lang, dict }: HomeTabsProps) {
           {active === "mre" && (
             <>
               <MRESection lang={lang} dict={dict.mre_section} />
-              <NotaryFeesCalculator />
+              <NotaryFeesCalculator lang={lang} />
               <DocumentsSection />
             </>
           )}

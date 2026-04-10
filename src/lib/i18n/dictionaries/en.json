@@ -17,7 +17,7 @@
     "cta_primary": "Simulate my loan",
     "cta_secondary": "See today's rates",
     "trust_labels": {
-      "banks": "8 banks compared — more coming",
+      "banks": "8 banks compared, more coming",
       "mre": "Residents & MRE",
       "secure": "100% free & secure"
     }
@@ -164,6 +164,10 @@
       {
         "q": "What is a Convertible Dirham Account?",
         "a": "A Convertible Dirham Account is a Moroccan bank account allowing MREs to freely transfer funds between Morocco and abroad. It is essential for financing real estate in Morocco from abroad."
+      },
+      {
+        "q": "What are the hidden fees when buying property in Morocco?",
+        "a": "Beyond the property price, expect approximately 6-7% in acquisition fees: registration duties (4%), land registry (1.5% + 150 DH), notary fees (regulated degressive scale + 10% VAT), mortgage registration (1% of loan + 150 DH), fiscal stamp (200 DH), and bank processing fee (500-1,500 DH, often negotiable). Our notary fees calculator computes these amounts automatically."
       }
     ]
   }

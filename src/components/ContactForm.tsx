@@ -20,9 +20,9 @@ const CONTENT = {
     profile: "Votre profil",
     profileOptions: [
       { value: "resident", label: "Résident Maroc" },
-      { value: "mre_europe", label: "MRE — Europe" },
-      { value: "mre_namerica", label: "MRE — Amérique du Nord" },
-      { value: "mre_other", label: "MRE — Autre pays" },
+      { value: "mre_europe", label: "MRE Europe" },
+      { value: "mre_namerica", label: "MRE Amérique du Nord" },
+      { value: "mre_other", label: "MRE Autre pays" },
     ],
     stage: "Où en êtes-vous dans votre projet ?",
     stageOptions: [
@@ -61,9 +61,9 @@ const CONTENT = {
     profile: "Your profile",
     profileOptions: [
       { value: "resident", label: "Morocco resident" },
-      { value: "mre_europe", label: "MRE — Europe" },
-      { value: "mre_namerica", label: "MRE — North America" },
-      { value: "mre_other", label: "MRE — Other country" },
+      { value: "mre_europe", label: "MRE Europe" },
+      { value: "mre_namerica", label: "MRE North America" },
+      { value: "mre_other", label: "MRE Other country" },
     ],
     stage: "Where are you in your home buying journey?",
     stageOptions: [
@@ -102,9 +102,9 @@ const CONTENT = {
     profile: "ملفك الشخصي",
     profileOptions: [
       { value: "resident", label: "مقيم بالمغرب" },
-      { value: "mre_europe", label: "مغترب — أوروبا" },
-      { value: "mre_namerica", label: "مغترب — أمريكا الشمالية" },
-      { value: "mre_other", label: "مغترب — دولة أخرى" },
+      { value: "mre_europe", label: "مغترب أوروبا" },
+      { value: "mre_namerica", label: "مغترب أمريكا الشمالية" },
+      { value: "mre_other", label: "مغترب دولة أخرى" },
     ],
     stage: "أين أنت في مشروع شراء منزلك؟",
     stageOptions: [
