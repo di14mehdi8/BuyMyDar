@@ -594,11 +594,51 @@ export function MortgageSimulator({ lang, dict }: SimulatorProps) {
                   </div>
                 </motion.div>
 
-                {/* Breakdown */}
-                <div className="card p-4">
-                  <ResultRow label={dict.result_total}     value={fmt(result.totalPayment)} />
-                  <ResultRow label={dict.result_interest}  value={fmt(result.totalInterest)} />
-                  <ResultRow label={dict.result_insurance} value={fmt(result.totalInsurance)} />
+                {/* Estimated acquisition fees — lump sum */}
+                {(() => {
+                  const registration  = principal * 0.04;
+                  const conservation  = principal * 0.015 + 150;
+                  const notaryH       = (() => { const b = [{c:100000,r:0.015},{c:500000,r:0.01},{c:2000000,r:0.005},{c:Infinity,r:0.0025}]; let f=0,p=0; for(const{c,r}of b){if(principal<=p)break;f+=(Math.min(principal,c)-p)*r;p=c;} return f; })();
+                  const tva           = notaryH * 0.10;
+                  const hypotheque    = principal * 0.01 + 150;
+                  const totalAcqFees  = registration + conservation + notaryH + tva + hypotheque + 200 + 1_000;
+                  return (
+                    <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-4">
+                      <p className="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">
+                        {T.acq_total}
+                      </p>
+                      <p className="text-2xl font-bold text-amber-900">{fmt(totalAcqFees)}</p>
+                      <p className="text-[10px] text-amber-600 mt-0.5">≈ {((totalAcqFees / principal) * 100).toFixed(1)}% {T.acq_total_budget_sub}</p>
+                    </div>
+                  );
+                })()}
+
+                {/* Pre-approval conversion card */}
+                <div className="rounded-2xl overflow-hidden border border-orange-100">
+                  <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-4">
+                    <p className="text-white font-bold text-sm mb-0.5">
+                      {lang === "ar" ? "استمارتك جاهزة!" : lang === "en" ? "Your estimate is ready." : "Votre estimation est prête."}
+                    </p>
+                    <p className="text-orange-100 text-xs leading-relaxed">
+                      {lang === "ar"
+                        ? "احصل على موافقة مسبقة خلال ٤٨ ساعة — مجاني وبدون التزام."
+                        : lang === "en"
+                        ? "Get a pre-approval in 48h — free, no commitment."
+                        : "Obtenez une pré-approbation en 48h — gratuit, sans engagement."}
+                    </p>
+                  </div>
+                  <div className="bg-orange-50 px-5 py-3 flex items-center justify-between gap-3">
+                    <p className="text-xs text-orange-700 font-medium">
+                      {lang === "ar" ? "دوسيه رقمي • ١٠ دقائق" : lang === "en" ? "Online dossier · 10 min" : "Dossier en ligne · 10 min"}
+                    </p>
+                    <a
+                      href={`https://credit.buymydar.com/${lang}/register`}
+                      className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white
+                                 text-xs font-bold px-4 py-2 rounded-xl transition-colors shrink-0"
+                    >
+                      {lang === "ar" ? "ابدأ →" : lang === "en" ? "Start my file →" : "Démarrer mon dossier →"}
+                    </a>
+                  </div>
                 </div>
 
                 <p className="text-[11px] text-slate-400 text-center px-2 leading-relaxed">
